@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Página de Cadastro</title>
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/buttons.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/inputs.css">
+</head>
+<body>
+  <header>
+    <!-- Conteúdo do header -->
+    <h1>Logo</h1>
+      <nav>
+        <!-- Conteúdo da navbar -->
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="#">Sobre</a></li>
+          <li><a href="#">Contato</a></li>
+        </ul>
+      </nav>
+  </header>
+  <main class="main">
+      <div class="container">
+        <h2>Cadastro</h2>
+        <form>
+          <div class="profile-icon">
+            <label for="image-upload" id="image-label">
+              <img id="profile-image" src="./assets/img/blank-profile.png" alt="Perfil">
+            </label>
+            <input type="file" id="image-upload" name="image" accept="image/*" style="display: none">
+            <label for="image-upload" id="select-image-text">Escolher Imagem</label>
+          </div>
+
+          <label for="name">Nome Completo</label>
+          <span id="name-error" class="error"></span>
+          <input type="text" id="name" name="name" required>
+
+          <label for="number">Número</label>
+          <span id="number-error" class="error"></span>
+          <input type="text" id="number" name="number" required placeholder="(xx) xxxx-xxxx">
+
+          <label for="email">E-mail</label>
+          <span id="email-error" class="error"></span>
+          <input type="email" id="email" name="email" required placeholder="exempler@email.com">
+
+          <label for="username">Usuário</label>
+          <span id="username-error" class="error"></span>
+          <input type="text" id="username" name="username" required placeholder="usuario">
+
+          <label for="password">Senha</label>
+          <span id="password-error" class="error"></span>
+          <input type="password" id="password" name="password" required placeholder="Digite sua senha aqui">
+
+          <label for="password">Confirme Sua Senha</label>
+          <span id="password-confirm-error" class="error"></span>
+          <input type="password" id="password-confirm" name="password" required placeholder="Digite sua senha aqui">
+
+        </form>
+        <div class="center">
+          <button class="button button-primary" id="btn-register">Cadastrar</button>
+        </div>
+      </div>
+  </main>
+  <footer>
+    <!-- Conteúdo do footer -->
+    <p>&copy; 2023 University. Todos os direitos reservados.</p>
+  </footer>
+  <script src="./assets/js/cadastro.js"></script>
+  <script src="assets/js/validator.js"></script>
+</body>
+</html>

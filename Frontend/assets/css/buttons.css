@@ -1,0 +1,44 @@
+/* buttons.css */
+
+.button {
+  display: inline-block;
+  padding: 10px;
+  background-color: #69a6e2;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 0 auto;
+}
+
+.button:hover {
+  background-color: #478bd1;
+}
+
+#btn-login {
+  width: 100px;
+  margin-bottom: 15px;
+  margin-top: 15px ;
+}
+
+#btn-login:hover {
+  background-color: #478bd1;
+}
+
+.button-primary {
+  background-color: #69a6e2;
+}
+
+.button-primary:hover {
+  background-color: #478bd1;
+}
+
+.button-secondary {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+.button-secondary:hover {
+  background-color: #e5e5e5;
+}

@@ -1,9 +1,12 @@
 const express = require('express');
+const cors = require('cors');
 const sequelize = require('../config/sequelize');
 const routes = require('../routes/index');
 const {User, Course, Category, Registration, Certificate} = require('../models/index');
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 app.use(routes);
 

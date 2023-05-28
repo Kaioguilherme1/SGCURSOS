@@ -1,0 +1,162 @@
+/* styles.css */
+
+/* Estilos gerais */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 400px;
+  margin: 100px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+label, input {
+  display: block;
+  margin-bottom: 4px;
+  margin-top: 10px;
+}
+
+input[type="text"], input[type="password"], input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  background-color: transparent;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
+  outline: none;
+  border-color: #69a6e2;
+}
+
+/* Estilos do header */
+header {
+  background-color: #69a6e2;
+  color: #fff;
+  padding: 10px;
+}
+
+/* Estilos da navbar */
+nav {
+  padding: 10px;
+  border-bottom-style: groove;
+  border-bottom-color: #333333;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+nav ul li a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.center {
+  text-align: center;
+}
+
+/* estilo da foto de perfil */
+
+.profile-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 100px;
+  cursor: pointer;
+  margin: 0 auto 10px;
+}
+
+#selected-image {
+  display: block;
+  margin-top: 10px;
+}
+
+.profile-icon {
+  /* ... */
+  position: relative;
+}
+
+#profile-image {
+  /* ... */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+#profile-image:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}
+#select-image-text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+  line-height: 1;
+}
+/* estilo do login */
+.forgot-password-link {
+  color: blue;
+  text-decoration: underline;
+  margin-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.signup-link {
+  color: green;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Estilos do footer */
+footer {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
