@@ -28,7 +28,7 @@ const User = sequelize.define('User', {
     allowNull: false
   },
   image_path: {
-    type: DataTypes.STRING(255),
+    type: DataTypes.TEXT(255),
     allowNull: true
   },
   profile: {

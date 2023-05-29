@@ -38,23 +38,9 @@ function isOwner(token, id) {
   }
 }
 
-function hasPermission(token, id, role = 'admin') {
-    try {
-        // Verificar se o token é válido e decodificá-lo
-        const decoded = validateToken(token);
-        const userId = decoded.id;
-        const profile = decoded.profile;
-        return profile === role || userId === id;
-    } catch (error) {
-        console.error('Erro ao verificar o token:', error);
-        return false; // Ocorreu um erro na verificação do token
-    }
-}
-
 module.exports = {
     validateToken,
     generateToken,
     isAdmin,
     isOwner,
-    hasPermission
 }
