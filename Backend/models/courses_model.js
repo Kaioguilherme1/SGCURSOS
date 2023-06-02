@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/sequelize');
+
 const Category = require('./categories_model');
 
 const Course = sequelize.define('Course', {
@@ -16,6 +17,14 @@ const Course = sequelize.define('Course', {
     type: DataTypes.TEXT,
     allowNull: false
   },
+  categories_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+        model: Category,
+        key: 'id'
+    }
+  },
   start_date: {
     type: DataTypes.DATE,
     allowNull: false
@@ -31,7 +40,5 @@ const Course = sequelize.define('Course', {
   }
 });
 
-Category.hasMany(Course);
-Course.belongsTo(Category);
 
 module.exports = Course;

@@ -57,7 +57,7 @@ function showLoggedInAdmin(username) {
 function showLoggedInUser(username) {
   let userProfile = document.querySelector('.user-profile');
   userProfile.innerHTML = `
-    <img src="../img/blank-profile.png" alt="Foto de Perfil" class="profile-icon">
+    <img src="assets/img/blank-profile.png" alt="Foto de Perfil" class="profile-icon">
     <a href="#" class="profile-link">${username}</a>
     <div class="dropdown-menu">
       <ul>

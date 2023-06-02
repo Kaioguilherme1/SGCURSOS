@@ -1,7 +1,8 @@
-const {hasPermissionAdmin} = require("../middleware/roles");
+const {hasPermissionAdmin, hasPermissionUser} = require("../middleware/roles");
 const {requestLogger} = require("../config/logger");
 const sequelize = require("../config/sequelize");
 const {QueryTypes} = require("sequelize");
+const {token} = require("morgan");
 
 // Controlador para obter todos os usuários
 const getAllUsersInfo = async (token) => {

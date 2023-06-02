@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes} = require('sequelize');
 const sequelize = require('../config/sequelize');
 
 const User = sequelize.define('User', {
@@ -28,11 +28,11 @@ const User = sequelize.define('User', {
     allowNull: false
   },
   image_path: {
-    type: DataTypes.TEXT(255),
+    type: DataTypes.STRING(255),
     allowNull: true
   },
   profile: {
-    type: DataTypes.ENUM('admin', 'aluno'),
+    type: DataTypes.ENUM('admin', 'aluno', `root`),
     allowNull: false
   },
   is_suspended: {

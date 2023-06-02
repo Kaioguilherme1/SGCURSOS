@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const auth = require("../config/auth");
+const {requestLogger} = require("../config/logger");
 
 // Verifica se o token é válido
 function validateToken(token) {
@@ -7,6 +8,7 @@ function validateToken(token) {
     const decoded = jwt.verify(token, auth.secret);
     return { valid: true, payload: decoded };
   } catch (error) {
+    requestLogger.error('Erro ao verificar o token: ' + error.message);
     return { valid: false, error: error.message };
   }
 }

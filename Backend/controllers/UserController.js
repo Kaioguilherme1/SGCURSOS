@@ -1,7 +1,5 @@
-const User = require('../models/users_model');
+const {User} = require('../models/index');
 const bycrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const auth = require('../config/auth');
 const {Op} = require("sequelize");
 const TokenController = require("../middleware/AuthToken");
 const {hasPermissionAdmin, hasPermissionUser} = require("../middleware/roles");
@@ -40,7 +38,8 @@ async function loginUser(identifier, password) {
             message: `Usuário ${identifier} não encontrado`,
         };
         }
-        const isValid = await bycrypt.compare(password, user.password);
+        const isValid = bycrypt.compare(password, user.password)
+
         if (!isValid) {
           requestLogger.error('Senha inválida')
           return {
@@ -50,7 +49,7 @@ async function loginUser(identifier, password) {
         }
         // Gera o token
         const Token = TokenController.generateToken({ id: user.id, profile: user.profile });
-
+        delete user.password;
         requestLogger.info(`Usuário ${identifier} autenticado com sucesso`);
         return {
             error: false,
@@ -79,6 +78,7 @@ async function getAllUsers(token) {
         }
     } else {
         requestLogger.error(`Usuário não tem permissão para listar usuários`);
+        return {mensagem: 'Usuário não tem permissão para listar usuários'}
     }
 }
 
