@@ -57,14 +57,8 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
   border-color: #69a6e2;
 }
 
-/* Estilos do header */
-header {
-  background-color: #69a6e2;
-  color: #fff;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.active {
+  color: #ffcc00;
 }
 
 .logo {

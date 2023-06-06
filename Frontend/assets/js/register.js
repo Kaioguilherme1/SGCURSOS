@@ -13,7 +13,6 @@ document.getElementById('image-upload').addEventListener('change', function() {
   }
 });
 
-
 const btnRegister = document.getElementById('btn-register');
 btnRegister.addEventListener('click', register);
 
@@ -27,35 +26,16 @@ const image_path = "path";
 
 console.log(image_path);
 
-function register(){
+async function register() {
+  user = new user();
+  let responseData = await user.register(name, number, email, username, password, profile, image_path);
 
-  if (!isValid()) {
-    return;
+  if (typeof responseData === 'string') {
+    alert(responseData);
+  } else if (responseData.error === 'true') {
+    alert(responseData.message);
+  } else {
+    alert(responseData.message);
+    window.location.href = 'login.html';
   }
-
-  const data = {
-    name,
-    number,
-    email,
-    username,
-    password,
-    profile,
-    image_path
-  };
-
-  fetch('http://localhost:3000/users/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data),
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });
 }
