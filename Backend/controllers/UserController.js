@@ -58,6 +58,7 @@ async function loginUser(identifier, password) {
             user: user
         };
     } catch (error) {
+        requestLogger.error('Erro ao autenticar usuário: ' + error.message);
         return {
             error: true,
             message: 'Erro ao autenticar usuário',

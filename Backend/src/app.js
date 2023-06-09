@@ -4,6 +4,7 @@ const sequelize = require('../config/sequelize');
 const routes = require('../routes/index');
 const {apiLogger} = require("../config/logger");
 const {createSQLFunctions} = require("../models/functions_models");
+const migration = require('../migrations/root');
 
 const app = express();
 
@@ -38,8 +39,10 @@ sequelize.authenticate().then(() => {
 
     console.log('Modelos sincronizados com o Banco de Dados!');
 
+    // Criar o usuário root usando a migração
+    return migration.up(sequelize.getQueryInterface(), sequelize);
     // Chama a função createSQLFunctions para executar o SQL personalizado
-    return createSQLFunctions();
+    //return createSQLFunctions();
   })
   .then(() => {
 

@@ -19,8 +19,10 @@ function hasPermissionUser(token, user_id) {
 function hasPermissionAdmin(token) {
   try {
     // Verificar se o token é válido e decodificá-lo
-    const decoded = validateToken(token);
+    const decoded = validateToken(token).payload;
     const profile = decoded.profile;
+    console.log(decoded)
+    console.log(profile)
     return profile === `admin` || profile === `root`;
   } catch (error) {
     console.error('Erro ao verificar o token:', error);

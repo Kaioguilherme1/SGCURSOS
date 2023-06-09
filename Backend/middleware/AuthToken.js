@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const auth = require("../config/auth");
+const {auth} = require("../config/auth");
 const {requestLogger} = require("../config/logger");
 
 // Verifica se o token é válido

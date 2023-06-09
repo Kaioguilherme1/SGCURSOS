@@ -15,4 +15,4 @@ const root = {
   profile: `root`
 };
 
-module.exports = auth;
+module.exports = {auth, root};

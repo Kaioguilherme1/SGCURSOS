@@ -1,68 +1,51 @@
 const express = require("express");
+const CourseController = require("../controllers/CourseController");
 const { body, validationResult } = require('express-validator');
+const {token} = require("morgan");
 
 const router = express.Router();
 
-// Rota para criar um novo curso
-router.post('/', [
-  body('name').notEmpty().withMessage('O campo nome é obrigatório'),
-  body('description').notEmpty().withMessage('O campo descrição é obrigatório'),
-  // Outras validações para os campos do curso
-], (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
-  // Se os dados forem válidos, continua com a lógica da rota
-  // ...
-
-  res.json({ message: 'Curso criado com sucesso!' });
+//--------------------------------------------------------------criar--------------------------------------------------------------
+router.post('/register', [
+    body('name').notEmpty().withMessage('O campo nome é obrigatório'),
+    body('description').notEmpty().withMessage('O campo descrição é obrigatório'),
+    body('category_id').notEmpty().withMessage('O campo categoria é obrigatório'),
+    body('image_path').notEmpty().withMessage('O campo imagem é obrigatório'),
+    body('start_date').notEmpty().withMessage('O campo data de início é obrigatório'),
+    body('duration_hours').notEmpty().withMessage('O campo duração é obrigatório')
+], async (req, res) => {
+const { name, description,tags , category_id, image_path, start_date, duration_hours } = req.body;
+    let token = req.headers.authorization;
+    const course = await CourseController.createCourse(token ,{
+        name,
+        description,
+        tags,
+        category_id,
+        image_path,
+        start_date,
+        duration_hours
+    });
+    res.json({course});
 });
 
-// Rota para obter todos os cursos
-router.get('/', (req, res) => {
-  // Lógica para obter todos os cursos
-  // ...
-  res.json({ message: 'Listar todos os cursos' });
+//--------------------------------------------------------------listar--------------------------------------------------------------
+
+router.get('/get', async (req, res) => {
+    let token = req.headers.authorization;
+    let consult = req.body
+    courses = await CourseController.getCourses(token, consult);
+    res.json(courses);
 });
 
-// Rota para obter um curso pelo ID
-router.get('/:id', (req, res) => {
-  const courseId = req.params.id;
+//--------------------------------------------------------------atualizar--------------------------------------------------------------
 
-  // Lógica para obter um curso pelo ID
-  // ...
-
-  res.json({ message: 'Obter curso pelo ID', id: courseId });
+router.put('/:id', async (req, res) => {
+    let token = req.headers.authorization;
+    let id = req.params.id;
+    let data = req.body;
+    let course = await CourseController.updateCourse(id, token, data);
+    res.json(courses);
 });
 
-// Rota para atualizar um curso pelo ID
-router.put('/:id', [
-  body('name').notEmpty().withMessage('O campo nome é obrigatório'),
-  body('description').notEmpty().withMessage('O campo descrição é obrigatório'),
-  // Outras validações para os campos do curso
-], (req, res) => {
-  const courseId = req.params.id;
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
-  // Se os dados forem válidos, continua com a lógica da rota
-  // ...
-
-  res.json({ message: 'Atualizar curso pelo ID' });
-});
-
-// Rota para excluir um curso pelo ID
-router.delete('/:id', (req, res) => {
-  const courseId = req.params.id;
-
-  // Lógica para excluir um curso pelo ID
-  // ...
-
-  res.json({ message: 'Excluir curso pelo ID' });
-});
 
 module.exports = router;
