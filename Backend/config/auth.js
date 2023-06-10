@@ -1,9 +1,12 @@
 const bycrypt = require('bcrypt');
 
 const auth = {
-  secret: "e393d742b17a4c74515b02e6c62da24518d3747f774244e3e0d1a3a209b99e3c" , // temporario para testes
- //process.env.SECRET,
+  secret: "e393d742b17a4c74515b02e6c62da24518d3747f774244e3e0d1a3a209b99e3c" , //process.env.SECRET_token,
   expireIn: "6h",
+};
+
+const certificateSecret = {
+  secret: '1309122d84371261e3e45ae3805007cf'
 };
 
 const root = {
@@ -15,4 +18,4 @@ const root = {
   profile: `root`
 };
 
-module.exports = {auth, root};
+module.exports = {auth, root, certificateSecret};
