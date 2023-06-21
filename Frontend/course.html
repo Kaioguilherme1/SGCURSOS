@@ -1,10 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Curso</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/buttons.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/inputs.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/profile.css">
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+
 </head>
 <body>
+  <header>
+      <nav class="navbar navbar-expand-lg bg-body-tertiary " data-bs-theme="dark">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+              <img src="assets/img/icon.png" alt="SGC" width="30" height="24" class="d-inline-block align-text-top">
+                SGCURSOS
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link active" style=" color: #ffcc00;" aria-current="page" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="courses.html">Cursos</a></li>
+                <li class="nav-item"><a class="nav-link" href="about.html">Sobre</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contato</a></li>
+              </ul>
+
+              <div class="user-profile">
+                  <a href="login.html" class="button-login">Login</a>
+                  <a href="register.html" class="button-register">cadastra-se</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+  </header>
+  <main class="main">
+      <div class="container text-center" style="min-width: 45%">
+          <div class="row" style="background: linear-gradient(to right, #478bd1, #71c7ec); border-radius: 10px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);">
+              <div class="row">
+                <h1 class="pb-3" style="text-align: left; color: white;">Curso de Node.js</h1>
+              </div>
+              <div class="row align-items-start">
+                <div class="col">
+                  <p style="color: white;">Carga Horária: <span style="font-weight: bold; background-color: rgba(255, 255, 255, 0.3); padding: 2px 6px; border-radius: 4px;">60 horas</span></p>
+                </div>
+                <div class="col">
+                  <p style="color: white;">Matriculados Atualmente: <span style="font-weight: bold; background-color: rgba(255, 255, 255, 0.3); padding: 2px 6px; border-radius: 4px;">50</span></p>
+                </div>
+              </div>
+          </div>
+
+          <div class="row align-items-start pt-3">
+            <div class="col">
+              <a type="button" class="btn btn-dark">Programação Web</a>
+            </div>
+            <div class="col">
+              <a type="button" class="btn btn-outline-primary btn-sm">JavaScript</a>
+              <a type="button" class="btn btn-outline-primary btn-sm">Node.js</a>
+              <a type="button" class="btn btn-outline-primary btn-sm">Express.js</a>
+              <a type="button" class="btn btn-outline-primary btn-sm">MongoDB</a>
+            </div>
+          </div>
+
+          <div class="row align-items-start pt-3" style="background-color: #f8f9fa; border-radius: 5px; padding: 10px;">
+            <div class="col">
+              <p class="mb-4" style="color: #333;">O curso de Node.js é projetado para ensinar os fundamentos da programação com Node.js. Você aprenderá a criar aplicativos web do lado do servidor usando JavaScript e o ambiente de tempo de execução do Node.js.</p>
+              <p class="mb-2" style="color: #555;">Os tópicos abordados no curso incluem:</p>
+              <ul class="list-group list-group-flush list-group-numbered text-start">
+                <li class="list-group-item">Introdução ao Node.js</li>
+                <li class="list-group-item">Manipulação de arquivos e pastas</li>
+                <li class="list-group-item">Criação de servidores web com Express.js</li>
+                <li class="list-group-item">Acesso a bancos de dados com MongoDB</li>
+                <li class="list-group-item">Autenticação e autorização de usuários</li>
+              </ul>
+              <p class="mt-4" style="color: #333;">Este curso é adequado para iniciantes que desejam aprender a desenvolver aplicativos web com Node.js. Não são necessários conhecimentos prévios de programação.</p>
+            </div>
+          </div>
+
+          <div class="row align-items-end pt-3">
+            <div class="col"></div>
+            <div class="col text-end">
+              <button type="button" class="btn btn-success">Matricule-se</button>
+            </div>
+          </div>
+        </div>
+
+
+  </main>
+
+  <footer>
+    <!-- Conteúdo do footer -->
+    <p>&copy; 2023 University. Todos os direitos reservados.</p>
+  </footer>
+  <script src="assets/js/script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 
 </body>
 </html>

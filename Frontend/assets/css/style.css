@@ -294,3 +294,13 @@ footer {
   width: 100%;
 }
 
+.glass-container {
+  background-color: rgba(128, 128, 128, 0.2);
+  backdrop-filter: blur(2px);
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.glass-container:hover {
+  background-color: rgba(128, 128, 128, 0.3);
+}

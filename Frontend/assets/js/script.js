@@ -1,4 +1,13 @@
 
+
+
+function search() {
+  const term = document.getElementById('search-input').value;
+  const termList = [];
+    termList.push(term);
+  window.location.href = `courses.html?tags=${termList}&category=${termList}&course=${termList}`;
+}
+
 // Verifica o estado de login ao carregar a página
 
 window.addEventListener('DOMContentLoaded', function() {

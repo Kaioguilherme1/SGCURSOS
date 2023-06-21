@@ -30,7 +30,7 @@ const { name, description,tags , category_id, image_path, start_date, duration_h
 
 //--------------------------------------------------------------listar--------------------------------------------------------------
 
-router.get('/get', async (req, res) => {
+router.post('/get', async (req, res) => {
     let token = req.headers.authorization;
     let consult = req.body
     courses = await CourseController.getCourses(token, consult);
@@ -47,5 +47,12 @@ router.put('/:id', async (req, res) => {
     res.json(courses);
 });
 
+//--------------------------------------------------------------deletar--------------------------------------------------------------
 
+router.delete('/:id', async (req, res) => {
+    let token = req.headers.authorization;
+    let id = req.params.id;
+    let course = await CourseController.deleteCourse(id, token);
+    res.json(courses);
+});
 module.exports = router;

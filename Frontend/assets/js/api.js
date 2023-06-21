@@ -1,6 +1,6 @@
 
 // endereco da api
-const API_URL = 'http://localhost'; // process.env.API_URL
+const API_URL = 'localhost'; // process.env.API_URL
 const API_PORT = 3000; // process.env.API_PORT
 
 function isValid(value) {
@@ -105,8 +105,8 @@ class Course {
   * @param {boolean} all - Define se todos os cursos devem ser retornados.
   * @param {string|null} id - O ID do curso a ser buscado.
   * @param {string|null} name - O nome do curso a ser buscado.
-  * @param {Array} tags - As tags relacionadas ao curso a ser buscado.
-  * @param {boolean} category - Define se a categoria do curso deve ser considerada na busca.
+  * @param {string} tags - As tags relacionadas ao curso a ser buscado.
+  * @param {string} category - Define se a categoria do curso deve ser considerada na busca.
   * @param {boolean} participants - Define se os participantes devem ser considerados na busca.
   * @returns {Promise} - Uma promessa que resolve com os dados dos cursos retornados.
   */
@@ -114,14 +114,15 @@ class Course {
     let requestGET = {};
 
     if (all && id == null && name == null && tags.length === 0) {
-      requestGET = { url: `http://${API_URL}:${API_PORT}/getAll`, method: 'GET' };
+      requestGET = { url: `http://${API_URL}:${API_PORT}/courses/get`, method: 'POST' , body: {all: true} };
     } else if (!participants) {
-      requestGET = { url: `http://${API_URL}:${API_PORT}/get`, method: 'POST', body: { id, name, tags, category, participants } };
+      requestGET = { url: `http://${API_URL}:${API_PORT}/courses/get`, method: 'POST', body: { id, name, tags, category, participants } };
     } else if (this.token !== '' && participants) {
-      requestGET = { url: `http://${API_URL}:${API_PORT}/get`, method: 'POST', body: { token: this.token, id, name, tags, category, participants } };
+      requestGET = { url: `http://${API_URL}:${API_PORT}/courses/get`, method: 'POST', body: { token: this.token, id, name, tags, category, participants } };
     }
-
-    return fetch(requestGET.url, { method: requestGET.method, body: JSON.stringify(requestGET.body) })
+    return fetch(requestGET.url, {headers: {'Content-Type': 'application/json'} ,
+                                      method: requestGET.method,
+                                      body: JSON.stringify(requestGET.body) })
       .then(response => response.json())
       .then(responseData => {
         console.log(responseData);

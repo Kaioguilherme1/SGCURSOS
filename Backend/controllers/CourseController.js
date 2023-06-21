@@ -81,11 +81,11 @@ async function getCourses(token, consult) {
           [Op.and]: [
             id ? { id } : {},
             name ? { name } : {},
-            tags.length > 0 ? { tags: { [Op.contains]: tags } } : {}
+            (tags && tags.length > 0) ? { tags: { [Op.contains]: tags } } : {}
           ]
         };
 
-    console.log(whereClause)
+    console.log("Consulta" + whereClause)
     let includeClause = null;
 
     if (participants && category) {
@@ -132,8 +132,39 @@ async function getCourses(token, consult) {
   }
 }
 
+async function deleteCourse(id, token) {
+    if (hasPermissionAdmin(token)){
+        try {
+            let course = await Course.destroy({
+                where: {
+                    id: id
+                }
+            });
+            return {
+                error: false,
+                message: 'Curso deletado com sucesso',
+                course: course
+            }
+        }catch (error) {
+            requestLogger.error('Erro ao deletar curso: ' + error.message);
+            return {
+                error: true,
+                message: 'Erro ao deletar curso' + data.name,
+                error_message: error.message,
+            }
+        }
+    }else {
+        requestLogger.error('tentaiva de deletar curso sem permissão');
+        return {
+            error: true,
+            message: 'Você não tem permissão para deletar um curso',
+        }
+    }
+}
+
 module.exports = {
     createCourse,
     updateCourse,
-    getCourses
+    getCourses,
+    deleteCourse
 }
