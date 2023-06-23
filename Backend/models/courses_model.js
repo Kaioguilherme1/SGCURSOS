@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/sequelize');
-
 const Category = require('./categories_model');
 const User = require("./users_model");
 
@@ -42,10 +41,13 @@ const Course = sequelize.define('Course', {
     type: DataTypes.INTEGER,
     allowNull: false
   },
-  enrolled_count: {
-    type: DataTypes.INTEGER,
+  lessons: {
+    type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: false,
-    defaultValue: 0
+  },
+  banner: {
+    type: DataTypes.STRING,
+    allowNull: true
   }
 });
 

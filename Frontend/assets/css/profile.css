@@ -21,7 +21,7 @@
   color: #f2f2f2;
 }
 
-.dropdown-menu {
+.dropdown-menu-profile {
    position: absolute;
   top: calc(100% + 10px);
   left: 0;
@@ -34,19 +34,23 @@
   padding: 5px;
   border-radius: 4px;
   font-size: 14px;
+  z-index: 999;
 }
 
-.user-profile:hover .dropdown-menu {
+.user-profile:hover .dropdown-menu-profile {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
   transition: opacity 0.3s ease, transform 0.3s ease 2s;
 }
 
-.dropdown-menu ul {
+.dropdown-menu-profile ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 999;
 }
 
 .dropdown-link {

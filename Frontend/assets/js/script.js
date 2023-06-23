@@ -21,9 +21,9 @@ window.addEventListener('DOMContentLoaded', function() {
     console.log('Usuário logado');
     console.log('Tipo de conta:', accountType);
 
-    if (accountType === 'admin') {
+    if (accountType === 'admin' || accountType === 'root') {
       showLoggedInAdmin(username);
-      console.log('Tipo de conta: admin');
+      console.log('Tipo de conta: admin ou root)');
       document.getElementById('btn-logout').addEventListener('click', function(event) {
         event.preventDefault();
         logout();
@@ -49,12 +49,12 @@ window.addEventListener('DOMContentLoaded', function() {
 function showLoggedInAdmin(username) {
   let userProfile = document.querySelector('.user-profile');
   userProfile.innerHTML = `
-    <img src="assets/img/blank-profile.png" alt="Foto de Perfil" class="profile-icon">
-    <a href="#" class="profile-link">${username}</a>
-    <div class="dropdown-menu">
+    <img src="assets/img/blank-profile.png" alt="Foto de Perfil" class="profile-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false" >
+    <a href="#" class="profile-link" style="margin-left: 5px">${username}</a>
+    <div class="dropdown-menu-profile">
       <ul>
         <li><a href="#" class="dropdown-link">Perfil</a></li>
-        <li><a href="#" class="dropdown-link">cursos</a></li>
+        <li><a href="courses.html?admin=true" class="dropdown-link">cursos</a></li>
         <li><a href="#" class="dropdown-link">alunos</a></li>
         <li><a href="#" class="dropdown-link">Configurações</a></li>
         <li><a id="btn-logout" class="dropdown-link" >Logout</a></li>

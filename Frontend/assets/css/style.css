@@ -8,11 +8,16 @@ body {
   padding: 0;
 }
 
+.main {
+      background-color: #f2f2f5; /* Cor meio branca meio cinza */
+      padding: 20px;
+    }
+
 .container {
   max-width: 400px;
   max-height: 900px;
   min-height: 450px;
-  margin: 100px auto;
+  margin: auto auto;
   background-color: #fff;
   padding: 20px;
   border-radius: 5px;
@@ -32,7 +37,14 @@ body {
   text-decoration: underline; /* Adicionar sublinhado ao passar o mouse */
 }
 
+.btn-icon {
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
 
+.btn-icon:hover {
+  transform: scale(1.4);
+}
 
 label, input {
   display: block;
@@ -299,6 +311,8 @@ footer {
   backdrop-filter: blur(2px);
   border-radius: 8px;
   transition: background-color 0.3s ease;
+  padding: 10px;
+  margin: 10px 80px;
 }
 
 .glass-container:hover {

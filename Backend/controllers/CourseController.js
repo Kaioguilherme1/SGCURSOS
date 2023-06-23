@@ -1,9 +1,11 @@
 
-const {Course, Category, User} = require('../models/index');
+const {Course, User} = require('../models/index');
+const Category = require('../models/categories_model');
 const {Op} = require("sequelize");
 const TokenController = require("../middleware/AuthToken");
 const {hasPermissionAdmin, hasPermissionUser} = require("../middleware/roles");
 const {requestLogger} = require("../config/logger");
+
 
 async function createCourse(token ,data) {
     if (hasPermissionAdmin(token)){
@@ -110,7 +112,9 @@ async function getCourses(token, consult) {
         }
       ];
     }
-
+    console.log("categoria:", Category);
+    console.log("clause:", JSON.stringify(whereClause));
+    console.log("Include:", JSON.stringify(includeClause));
     const courses = await Course.findAll({
       where: whereClause,
       include: includeClause

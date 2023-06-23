@@ -7,11 +7,11 @@ function isValid(value) {
     return value != null && value !== '';
 }
 class user{
-    constructor(){
-        this.id = '';
-        this.token = '';
-        this.accountType = '';
-        this.username = '';
+    constructor(id, token, username, accountType){
+        this.id = id;
+        this.token = token;
+        this.accountType = username;
+        this.username = accountType;
     }
 
     /**
@@ -74,7 +74,7 @@ class user{
 
           // Enviar os dados para o backend
           try{
-              fetch(`http://${API_URL}:${API_PORT}/users/login`, {
+              return  fetch(`http://${API_URL}:${API_PORT}/users/login`, {
                   method: 'POST',
                   headers: {
                       'Content-Type': 'application/json'
@@ -82,8 +82,8 @@ class user{
                   body: JSON.stringify(data),
                }).then(response => response.json())
                   .then(responseData => {
-                      console.log(responseData);
-                      return responseData.login()
+                    console.log(responseData);
+                    return responseData;
                   })
         }catch(error){
               console.error('Error:', error);
@@ -94,11 +94,11 @@ class user{
 }
 
 class Course {
-  constructor() {
-    this.id = '';
-    this.token = '';
-    this.username = '';
-    this.accountType = '';
+  constructor(id, token, username, accountType) {
+    this.id = id;
+    this.token = token;
+    this.username = username;
+    this.accountType = accountType;
   }
   /**
   * Obtém os cursos com base nos parâmetros fornecidos.
@@ -112,7 +112,7 @@ class Course {
   */
   async get(all = true, id = null, name = null, tags = [], category = false, participants = false) {
     let requestGET = {};
-
+    console.log(this.token)
     if (all && id == null && name == null && tags.length === 0) {
       requestGET = { url: `http://${API_URL}:${API_PORT}/courses/get`, method: 'POST' , body: {all: true} };
     } else if (!participants) {
@@ -132,5 +132,25 @@ class Course {
         console.error('Erro:', error);
         throw error;
       });
+  }
+
+  async delete(id) {
+    return fetch(`http://${API_URL}:${API_PORT}/courses/${id}`, {
+      method: 'DELETE',
+      headers: {
+          'authorization': this.token,
+          'Content-Type': 'application/json'
+      },
+
+    })
+    .then(response => response.json())
+    .then(responseData => {
+      console.log(responseData);
+      return responseData;
+    })
+    .catch(error => {
+      console.error('Erro:', error);
+      throw error;
+    });
   }
 }
