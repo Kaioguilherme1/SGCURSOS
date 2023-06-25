@@ -3,13 +3,16 @@ const {auth} = require("../config/auth");
 const {requestLogger} = require("../config/logger");
 
 // Verifica se o token é válido
-function validateToken(token) {
+async function validateToken(token) {
   try {
-    const decoded = jwt.verify(token, auth.secret);
-    return { valid: true, payload: decoded };
+    const decoded = await jwt.verify(token, auth.secret);
+    return {valid: true, payload: decoded};
   } catch (error) {
+    if (error.name === 'TokenExpiredError') {
+      return {valid: false, error: 'Token expirado'};
+    }
     requestLogger.error('Erro ao verificar o token: ' + error.message);
-    return { valid: false, error: error.message };
+    return {valid: false, error: error.message};
   }
 }
 

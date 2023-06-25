@@ -63,6 +63,7 @@ router.get('/:id', async (req, res) => {
     try {
         const token = req.headers.authorization;
         const reqId = req.params.id;
+        console.log(reqId, token)
         const response = await UserController.getUserById(token, reqId);
         res.json({response});
     }catch (error) {

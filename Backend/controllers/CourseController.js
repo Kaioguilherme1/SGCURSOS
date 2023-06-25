@@ -112,9 +112,6 @@ async function getCourses(token, consult) {
         }
       ];
     }
-    console.log("categoria:", Category);
-    console.log("clause:", JSON.stringify(whereClause));
-    console.log("Include:", JSON.stringify(includeClause));
     const courses = await Course.findAll({
       where: whereClause,
       include: includeClause
@@ -146,14 +143,14 @@ async function deleteCourse(id, token) {
             });
             return {
                 error: false,
-                message: 'Curso deletado com sucesso',
+                message: `Curso deletado com sucesso`,
                 course: course
             }
         }catch (error) {
             requestLogger.error('Erro ao deletar curso: ' + error.message);
             return {
                 error: true,
-                message: 'Erro ao deletar curso' + data.name,
+                message: 'Erro ao deletar curso',
                 error_message: error.message,
             }
         }

@@ -1,5 +1,6 @@
 
 // endereco da api
+const APT_PROTOCOL = 'http'; // process.env.APT_PROTOCOL
 const API_URL = 'localhost'; // process.env.API_URL
 const API_PORT = 3000; // process.env.API_PORT
 
@@ -42,7 +43,7 @@ class user{
         return "Preencha todos os campos!"
       }
 
-      fetch(`http://${API_URL}:${API_PORT}/users/register`, {
+      fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/users/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -74,7 +75,7 @@ class user{
 
           // Enviar os dados para o backend
           try{
-              return  fetch(`http://${API_URL}:${API_PORT}/users/login`, {
+              return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/users/login`, {
                   method: 'POST',
                   headers: {
                       'Content-Type': 'application/json'
@@ -89,6 +90,24 @@ class user{
               console.error('Error:', error);
               return error
           }
+        }
+    }
+
+    async get(id){
+        try{
+            return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/users/${id}`, {
+                method: 'GET',
+                headers: {
+                    'authorization': this.token,
+                    'Content-Type': 'application/json'
+                },
+             }).then(response => response.json())
+                .then(responseData => {
+                    return responseData.response;
+                })
+      }catch(error){
+            console.error('Error:', error);
+            return error
         }
     }
 }
@@ -114,15 +133,20 @@ class Course {
     let requestGET = {};
     console.log(this.token)
     if (all && id == null && name == null && tags.length === 0) {
-      requestGET = { url: `http://${API_URL}:${API_PORT}/courses/get`, method: 'POST' , body: {all: true} };
+      requestGET = { url: `${APT_PROTOCOL}://${API_URL}:${API_PORT}/courses/get`, method: 'POST' , body: {all: true} };
     } else if (!participants) {
-      requestGET = { url: `http://${API_URL}:${API_PORT}/courses/get`, method: 'POST', body: { id, name, tags, category, participants } };
+      requestGET = { url: `${APT_PROTOCOL}://${API_URL}:${API_PORT}/courses/get`, method: 'POST', body: { id, name, tags, category, participants } };
     } else if (this.token !== '' && participants) {
-      requestGET = { url: `http://${API_URL}:${API_PORT}/courses/get`, method: 'POST', body: { token: this.token, id, name, tags, category, participants } };
+      requestGET = { url: `${APT_PROTOCOL}://${API_URL}:${API_PORT}/courses/get`, method: 'POST', body: { token: this.token, id, name, tags, category, participants } };
     }
-    return fetch(requestGET.url, {headers: {'Content-Type': 'application/json'} ,
-                                      method: requestGET.method,
-                                      body: JSON.stringify(requestGET.body) })
+    return fetch(requestGET.url, {
+        headers: {
+            'authorization': this.token,
+            'Content-Type': 'application/json'
+        } ,
+        method: requestGET.method,
+        body: JSON.stringify(requestGET.body) })
+
       .then(response => response.json())
       .then(responseData => {
         console.log(responseData);
@@ -135,7 +159,7 @@ class Course {
   }
 
   async delete(id) {
-    return fetch(`http://${API_URL}:${API_PORT}/courses/${id}`, {
+    return fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/courses/${id}`, {
       method: 'DELETE',
       headers: {
           'authorization': this.token,
@@ -145,7 +169,6 @@ class Course {
     })
     .then(response => response.json())
     .then(responseData => {
-      console.log(responseData);
       return responseData;
     })
     .catch(error => {

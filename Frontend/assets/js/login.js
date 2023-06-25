@@ -19,11 +19,12 @@ async function login() {
       alert(responseData.message);
     } else {
       const token = responseData.token;
-      const { name, email, profile, image_path } = responseData.user;
+      const { name, email, profile,id, image_path } = responseData.user;
 
       // Armazenar os valores no localStorage
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('token', token);
+      localStorage.setItem('id', id);
       localStorage.setItem('name', name);
       localStorage.setItem('username', username);
       localStorage.setItem('email', email);

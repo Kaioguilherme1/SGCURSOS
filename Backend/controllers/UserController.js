@@ -88,17 +88,35 @@ async function getUserById(token, id) {
   if (hasPermissionUser(token, id)) {
     try {
       const user = await User.findByPk(id);
-      if (user) {
+      if (user !== undefined) {
         requestLogger.info(`Usuário ${id} enviado com sucesso`);
-        return user;
+        return {
+          error: false,
+          message: `Usuário ${id} enviado com sucesso`,
+          user: user
+      }
       } else {
         requestLogger.error(`Usuário ${id} não encontrado`);
-        throw new Error(`Usuário ${id} não encontrado`);
+        return {
+            error: true,
+            message: `Usuário ${id} não encontrado`,
+            error_message: 'Usuário não encontrado',
+        }
       }
     } catch (error) {
       requestLogger.error('Erro ao obter usuário: ' + error.message);
-      throw new Error('Erro ao obter usuário');
+      return {
+          error: true,
+          message: 'Erro ao obter usuário',
+          error_message: error.message,
+      }
     }
+  }else{
+      return {
+          error: true,
+          message: 'Usuário não tem permissão para acessear este usuário',
+          error_message: 'sem permissão',
+      }
   }
 }
 

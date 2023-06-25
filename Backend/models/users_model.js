@@ -32,7 +32,7 @@ const User = sequelize.define('User', {
     allowNull: true
   },
   profile: {
-    type: DataTypes.ENUM('admin', 'aluno', `root`),
+    type: DataTypes.ENUM('admin', 'student', `root`),
     allowNull: false
   },
   is_suspended: {

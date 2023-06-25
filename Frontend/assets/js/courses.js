@@ -1,7 +1,27 @@
 
-
 let token = localStorage.getItem("token");
 const courseApi = new Course(null, token);
+
+async function deleteCourse(id) {
+    // Exibe uma mensagem de confirmação e solicita a confirmação do usuário
+    const confirmed = confirm("Tem certeza de que deseja deletar este curso?");
+
+    if (confirmed) {
+        console.log("Deletando curso: " + id);
+        let responseDelete = await courseApi.delete(id);
+        if (responseDelete.error === true) {
+            console.warn("Erro ao deletar curso!");
+            alert(responseDelete.message);
+            console.error(responseDelete.message);
+        } else {
+            console.log(responseDelete);
+            alert("Curso deletado com sucesso!");
+            location.reload();
+        }
+    } else {
+        console.log("Operação de exclusão cancelada pelo usuário.");
+    }
+}
 
 function renderCourses(courses) {
   console.log("Renderizando cursos...");
@@ -141,7 +161,11 @@ function renderCoursesAdmin(courses) {
             </div>
           </div>
         </div>
+        <div class="row mt-3 justify-content-end" style="background-color: transparent; border-bottom: 1px solid #2787ff; margin: 5px; padding: 5px;">
+           <button type="button" class="btn btn-primary" style="width: 200px" onclick="(() => {window.location.href = 'edit.html?create=true'})()" >Criar Curso</button>
+        </div>
       `;
+      
       headerContainer.insertAdjacentHTML('afterbegin', filtersHTML);
 
       courses.forEach(function (course) {
@@ -156,29 +180,17 @@ function renderCoursesAdmin(courses) {
               <a>N° Alunos: <span class="badge text-bg-primary" style="font-weight: bold; padding: 2px 6px; border-radius: 4px;">${numParticipants} Alunos</span></a>
             </div>
             <div class="col d-flex align-items-center">
-              <a> Tags: ${tags.map(tag => `<a href="courses.html?tags=${tag}" style="margin: 4px" type="button" class="btn btn-outline-primary btn-sm">${tag}</a>`).join('')}</a>
+              <a> Tags: ${tags.map(tag => `<a href="courses.html?admin=true&&tags=${tag}" style="margin: 4px" type="button" class="btn btn-outline-primary btn-sm">${tag}</a>`).join('')}</a>
             </div>
             <div class="col text-end align-self-center">
-              <img class="btn-icon" href="course.html?id=${id}" id="btn-view-${id}" src="assets/icons/document-104.png" alt="Ver curso" width="35" height="35" title="Ver" style="margin: 4px">
-              <img class="btn-icon" id="btn-edit-${id}" src="assets/icons/edit-104.png" alt="Editar" width="35" height="35" title="Editar" style="margin: 4px">
-              <img class="btn-icon" id="btn-delete-${id}" src="assets/icons/trash-96.png" alt="Deletar" width="35" height="35" title="Deletar" style="margin: 4px">
+              <img class="btn-icon" href="course.html?id=${id}" id="btn-view-${id}" src="assets/icons/document-104.png" alt="Ver curso" width="35" height="35" title="Ver" style="margin: 4px" onclick="(() => {window.location.href = 'course.html?id=${id}'})()">
+              <img class="btn-icon" id="btn-edit-${id}" src="assets/icons/edit-104.png" alt="Editar" width="35" height="35" title="Editar" style="margin: 4px" onclick="(() => {window.location.href = 'edit.html?course=${id}'})()">
+              <img class="btn-icon" id="btn-delete-${id}" src="assets/icons/trash-96.png" alt="Deletar" width="35" height="35" title="Deletar" style="margin: 4px" onclick="deleteCourse(${id})">
             </div>
           </div>
         `;
 
       coursesContainer.insertAdjacentHTML('beforeend', courseCardHTML);
-
-      // Função dos botões de ação
-      // const btnEdit = document.getElementById("btn-edit-${id}");
-      const btnDelete = document.getElementById("btn-delete-${id}");
-
-      // btnEdit.addEventListener("click", function () {
-      //   console.log("Editando curso...");
-      // });
-
-      btnDelete.addEventListener("click", function () {
-         const responseData =  courseApi.delete(id);
-      });
       });
     }
 

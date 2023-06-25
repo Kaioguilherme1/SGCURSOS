@@ -53,7 +53,7 @@ function showLoggedInAdmin(username) {
     <a href="#" class="profile-link" style="margin-left: 5px">${username}</a>
     <div class="dropdown-menu-profile">
       <ul>
-        <li><a href="#" class="dropdown-link">Perfil</a></li>
+        <li><a href="edit.html" class="dropdown-link">Perfil</a></li>
         <li><a href="courses.html?admin=true" class="dropdown-link">cursos</a></li>
         <li><a href="#" class="dropdown-link">alunos</a></li>
         <li><a href="#" class="dropdown-link">Configurações</a></li>
@@ -70,7 +70,7 @@ function showLoggedInUser(username) {
     <a href="#" class="profile-link">${username}</a>
     <div class="dropdown-menu">
       <ul>
-        <li><a href="#" class="dropdown-link">Perfil</a></li>
+        <li><a href="edit.html" class="dropdown-link">Perfil</a></li>
         <li><a href="#" class="dropdown-link">Meus cursos</a></li>
         <li><a href="#" class="dropdown-link">Meus certificados</a></li>
         <li><a href="#" class="dropdown-link">Configurações</a></li>
@@ -88,6 +88,39 @@ function showLoggedOutState() {
       <a href="register.html" class="button-register">cadastra-se</a>
   `;
 }
+// Função para confim
+
+function modalConfirm(text) {
+  return new Promise((resolve, reject) => {
+    const modal = document.getElementById('confirmationModal');
+    const confirmBtn = document.getElementById('confirmBtn');
+
+    const modalTitle = modal.querySelector('.modal-title');
+    const modalBody = modal.querySelector('.modal-body');
+
+    modalTitle.textContent = 'Confirmação';
+    modalBody.textContent = text;
+
+    const confirmar = () => {
+      modal.removeEventListener('hidden.bs.modal', reject);
+      resolve(true);
+      modal.style.display = 'none';
+    };
+
+    const cancelar = () => {
+      modal.removeEventListener('hidden.bs.modal', resolve);
+      resolve(false);
+      modal.style.display = 'none';
+    };
+
+    confirmBtn.addEventListener('click', confirmar);
+    modal.addEventListener('hidden.bs.modal', cancelar);
+
+    modal.classList.add('show');
+    modal.style.display = 'block';
+  });
+}
+
 
 // Função para fazer logout
 function logout() {
