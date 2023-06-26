@@ -33,7 +33,7 @@ async function login() {
       window.location.href = 'index.html';
     }
   } catch (error) {
-    console.log('Erro ao realizar o login:', error);
+    console.error('Erro ao realizar o login:', error);
     alert('Erro ao realizar o login. Verifique o console para mais informações.');
   }
 }

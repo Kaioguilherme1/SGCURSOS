@@ -3,7 +3,6 @@ const cors = require('cors');
 const sequelize = require('../config/sequelize');
 const routes = require('../routes/index');
 const {apiLogger} = require("../config/logger");
-const {createSQLFunctions} = require("../models/functions_models");
 const migration = require('../migrations/root');
 
 const app = express();
@@ -41,8 +40,6 @@ sequelize.authenticate().then(() => {
 
     // Criar o usuário root usando a migração
     return migration.up(sequelize.getQueryInterface(), sequelize);
-    // Chama a função createSQLFunctions para executar o SQL personalizado
-    //return createSQLFunctions();
   })
   .then(() => {
 

@@ -33,7 +33,8 @@ const { name, description,tags , category_id, image_path, start_date, duration_h
 router.post('/get', async (req, res) => {
     let token = req.headers.authorization;
     let consult = req.body
-    courses = await CourseController.getCourses(token, consult);
+    let courses = await CourseController.getCourses(token, consult);
+    console.log(courses)
     res.json(courses);
 });
 

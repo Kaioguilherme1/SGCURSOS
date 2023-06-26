@@ -1,11 +1,10 @@
 
-const {Course, User} = require('../models/index');
+const {Course, User, Registration} = require('../models/index');
 const Category = require('../models/categories_model');
 const {Op} = require("sequelize");
 const TokenController = require("../middleware/AuthToken");
 const {hasPermissionAdmin, hasPermissionUser} = require("../middleware/roles");
 const {requestLogger} = require("../config/logger");
-
 
 async function createCourse(token ,data) {
     if (hasPermissionAdmin(token)){
@@ -34,7 +33,7 @@ async function createCourse(token ,data) {
 }
 
 async function updateCourse(id, token, data) {
-    if (hasPermissionAdmin(token)){
+    if (await hasPermissionAdmin(token)){
         try {
             let course = await Course.update(data, {
                 where: {
@@ -67,7 +66,7 @@ async function updateCourse(id, token, data) {
 async function getCourses(token, consult) {
   let { all, id, name, tags, category, participants } = consult;
 
-  if (participants && !hasPermissionAdmin()) {
+  if (participants && !await hasPermissionAdmin()) {
     requestLogger.error('Tentativa de acessar cursos sem permissão de administrador');
     return {
       error: true,
@@ -76,7 +75,6 @@ async function getCourses(token, consult) {
   }
 
   try {
-    console.log(all, id, name, tags, category, participants)
     const whereClause = all
       ? {} // Se "all" for true, não aplicamos nenhum filtro
       : {
@@ -90,32 +88,49 @@ async function getCourses(token, consult) {
     console.log("Consulta" + whereClause)
     let includeClause = null;
 
-    if (participants && category) {
+
+    if (category) {
       includeClause = [
         {
           model: Category,
-          as: 'category',
-          attributes: ['name', 'description']
-        },
-        {
-          model: User,
-          as: 'participants',
-          attributes: ['name', 'email']
-        }
-      ];
-    } else if (category) {
-      includeClause = [
-        {
-          model: Category,
-          as: 'category',
           attributes: ['name', 'description']
         }
       ];
     }
-    const courses = await Course.findAll({
+   const courses = await Course.findAll({
       where: whereClause,
       include: includeClause
     });
+
+    try {
+      for (const course of courses) {
+        const participantsList = await Registration.findAll({
+          where: {
+            Course_id: course.id
+          },
+          include: [
+            {
+              model: User,
+              attributes: ['name']
+            }
+          ],
+          attributes: ['id']
+        });
+
+        if (participants) {
+          course.participants =  participantsList.map(participant => [participant.id, participant.User.name]);
+        } else {
+          course.participants = participantsList.map(() => 'confidencial');
+        }
+      }
+    } catch (error) {
+      requestLogger.error('Erro ao buscar participantes: ' + error.message);
+      return {
+        error: true,
+        message: 'Erro ao buscar participantes',
+        error_message: error.message
+      };
+    }
 
     requestLogger.info(`${courses.length} Cursos encontrados`);
     return {
@@ -134,7 +149,7 @@ async function getCourses(token, consult) {
 }
 
 async function deleteCourse(id, token) {
-    if (hasPermissionAdmin(token)){
+    if (await hasPermissionAdmin(token)){
         try {
             let course = await Course.destroy({
                 where: {

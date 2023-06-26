@@ -52,7 +52,6 @@ class user{
       })
       .then(response => response.json())
       .then(responseData => {
-        console.log(responseData);
         return responseData
       })
       .catch((error) => {
@@ -83,7 +82,6 @@ class user{
                   body: JSON.stringify(data),
                }).then(response => response.json())
                   .then(responseData => {
-                    console.log(responseData);
                     return responseData;
                   })
         }catch(error){
@@ -110,6 +108,8 @@ class user{
             return error
         }
     }
+
+    async
 }
 
 class Course {
@@ -131,7 +131,6 @@ class Course {
   */
   async get(all = true, id = null, name = null, tags = [], category = false, participants = false) {
     let requestGET = {};
-    console.log(this.token)
     if (all && id == null && name == null && tags.length === 0) {
       requestGET = { url: `${APT_PROTOCOL}://${API_URL}:${API_PORT}/courses/get`, method: 'POST' , body: {all: true} };
     } else if (!participants) {
@@ -149,7 +148,6 @@ class Course {
 
       .then(response => response.json())
       .then(responseData => {
-        console.log(responseData);
         return responseData;
       })
       .catch(error => {

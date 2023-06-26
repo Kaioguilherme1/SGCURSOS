@@ -6,39 +6,43 @@ const User = require('./users_model');
 const Course = require('./courses_model');
 const Certificate = require('./certificates_model');
 
-
 const Registration = sequelize.define('Registration', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-    User_id: {
+  progress_time: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: {
-      model: User,
-      key: 'id'
-    }
+    defaultValue: 0
   },
-    Course_id: {
+  final_grade: {
     type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-        model: Course,
-        key: 'id'
-    }
-  },
-
-  Certificate_id: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    references: {
-      model: Certificate,
-      key: 'id'
-    }
+    allowNull: true
   }
-
 });
+
+// Relacionamentos
+Registration.belongsTo(User, {
+  foreignKey: 'User_id',
+  allowNull: false
+});
+
+Registration.belongsTo(Course, {
+  foreignKey: 'Course_id',
+  allowNull: false
+});
+
+Registration.belongsTo(Certificate, {
+  foreignKey: 'Certificate_id',
+  allowNull: true
+});
+
+User.hasMany(Registration, {
+  foreignKey: 'User_id',
+  allowNull: false
+});
+
 
 module.exports = Registration;

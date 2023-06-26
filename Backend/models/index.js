@@ -6,7 +6,6 @@ const Course = require('./courses_model');
 const Category = require('./categories_model');
 const Certificate = require('./certificates_model');
 const Registration = require('./Registration_model');
-const Functions = require('./functions_models');
 
 module.exports = {
     User,

@@ -8,7 +8,6 @@ let urlParams = new URLSearchParams(window.location.search);
 let courseId = urlParams.get('course');
 let create = urlParams.get('create');
 
-console.warn('courseId', courseId, 'create', create,)
 let headerEdit = document.getElementById('header-edit');
 let containerEdit = document.getElementById('edit-container');
 
@@ -99,13 +98,8 @@ function closeCreateCategoryModal() {
 //--------------------------------------- funções de requisição ---------------------------------------
 
 async function saveForm() {
-  const banner = document.getElementById('input-banner').files[0];
-  const name = document.getElementById('input-name').value;
-  const description = document.getElementById('input-description').value;
-  const duration_hours = document.getElementById('input-duration_hours').value;
-  const category = document.getElementById('input-category').value;
-
   // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  const userData = {};
   const forms = document.querySelectorAll('.needs-validation');
 
   // Loop over them and prevent submission
@@ -119,26 +113,20 @@ async function saveForm() {
     }, false);
   });
 
-  if (tagsArray.length === 0) {
-    alert('É necessário adicionar pelo menos uma tag');
-    return;
-  }
-
   if (create === 'true' && (userProfile === 'admin' || userProfile === 'root')) {
-      if(await modalConfirm('Deseja criar o curso?')){
-        const data = {
-          banner: banner,
-          name: name,
-          description: description,
-          duration_hours: duration_hours,
-          category: category,
-          tags: tagsArray,
-          topics: topicArray
-        }
-        await createCourse(data);
-      }
-  } else if (create !== 'true' && courseId !== null && (userProfile === 'admin' || userProfile === 'root')) {
-    if (await modalConfirm('Deseja atualizar o curso?')) {
+
+    if (tagsArray.length === 0) {
+      alert('É necessário adicionar pelo menos uma tag');
+      return;
+    }
+
+    if (confirm('Deseja criar o curso?')) {
+      const banner = document.getElementById('input-banner').files[0];
+      const name = document.getElementById('input-name').value;
+      const description = document.getElementById('input-description').value;
+      const duration_hours = document.getElementById('input-duration_hours').value;
+      const category = document.getElementById('input-category').value;
+
       const data = {
         banner: banner,
         name: name,
@@ -147,27 +135,66 @@ async function saveForm() {
         category: category,
         tags: tagsArray,
         topics: topicArray
-      }
+      };
+
+      await createCourse(data);
+    }
+  } else if (create !== 'true' && courseId !== null && (userProfile === 'admin' || userProfile === 'root')) {
+
+    if (tagsArray.length === 0) {
+      alert('É necessário adicionar pelo menos uma tag');
+      return;
+    }
+
+    if (confirm('Deseja atualizar o curso?')) {
+      const banner = document.getElementById('input-banner').files[0];
+      const name = document.getElementById('input-name').value;
+      const description = document.getElementById('input-description').value;
+      const duration_hours = document.getElementById('input-duration_hours').value;
+      const category = document.getElementById('input-category').value;
+
+      const data = {
+        banner: banner,
+        name: name,
+        description: description,
+        duration_hours: duration_hours,
+        category: category,
+        tags: tagsArray,
+        topics: topicArray
+      };
+
       await updateCourse(data);
     }
   } else if (userProfile === 'admin' || userProfile === 'root') {
-    if(await modalConfirm('Deseja atualizar o perfil?')){
-      const data = {
+    // Atualiza o perfil do usuário admin
+    userData.name = document.getElementById('input-name').value || undefined;
+    userData.username = document.getElementById('input-username').value || undefined;
+    userData.email = document.getElementById('input-email').value || undefined;
+    userData.number = document.getElementById('input-number').value || undefined;
+    userData.password = document.getElementById('input-password').value || undefined;
+    userData.confirmPassword = document.getElementById('input-password-confirm').value || undefined;
+    userData.profile = document.getElementById('input-admin').checked ? 'admin' : undefined;
 
-      }
-      await updateProfile(data);
+    if (confirm('Deseja atualizar o perfil?')) {
+      await updateProfile(userData);
     }
   } else if (userProfile === 'student') {
-    if(await modalConfirm('Deseja atualizar o perfil?')){
-      const data = {
+    userData.name = document.getElementById('input-name').value || undefined;
+    userData.username = document.getElementById('input-username').value || undefined;
+    userData.email = document.getElementById('input-email').value || undefined;
+    userData.number = document.getElementById('input-number').value || undefined;
+    userData.password = document.getElementById('input-password').value || undefined;
+    userData.confirmPassword = document.getElementById('input-password-confirm').value || undefined;
+    userData.profile = document.getElementById('input-admin').checked ? 'admin' : undefined;
 
-      }
-      await updateStudentProfile(data);
+    if (confirm('Deseja atualizar o perfil?')) {
+      await updateStudentProfile(userData);
     }
   } else {
     window.location.href = 'index.html';
   }
 }
+
 async function createCourse(data) {
 
 }
@@ -334,7 +361,7 @@ async function renderEditCourse() {
     `;
     const containerContent = `
         <div class="container" style="max-width: 60%"> 
-            <form>
+            <form class="row g-3" >
               <fieldset>
                 <legend>Editar Curso</legend>
                 <div class="mb-3">
@@ -433,7 +460,7 @@ async function renderEditProfileAdmin() {
     `;
     const containerContent = `
         <div class="container" style="max-width: 60%"> 
-            <form>
+            <form class="row g-3 needs-validation" novalidate method="POST" enctype="multipart/form-data">
               <fieldset>
                 <legend>Editar Admin</legend>
                 <div class="mb-3">
@@ -462,8 +489,18 @@ async function renderEditProfileAdmin() {
                     <input type="number" class="form-control" id="input-number" placeholder="${number}">
                 </div>              
                 <div class="mb-3">
-                    <label for="profile" class="form-label">Perfil:</label>
-                    <input type="text" class="form-control" id="input-profile" placeholder="${profile}">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="flexRadioDefault" id="input-student">
+                      <label class="form-check-label" for="flexRadioDefault1">
+                        Aluno
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="flexRadioDefault" id="input-admin" checked>
+                      <label class="form-check-label" for="flexRadioDefault2">
+                        Admnistrador
+                      </label>
+                    </div>
                 </div>
                 <div class="col-md">
                   <div class="row">

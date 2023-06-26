@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/sequelize');
 const Category = require('./categories_model');
-const User = require("./users_model");
+const User = require('./users_model');
 
 const Course = sequelize.define('Course', {
   id: {
@@ -21,18 +21,6 @@ const Course = sequelize.define('Course', {
     type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: true
   },
-  participants: {
-    type: DataTypes.ARRAY(DataTypes.INTEGER),
-    allowNull: true,
-  },
-  categories_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: Category,
-      key: 'id'
-    }
-  },
   start_date: {
     type: DataTypes.DATE,
     allowNull: false
@@ -43,12 +31,22 @@ const Course = sequelize.define('Course', {
   },
   lessons: {
     type: DataTypes.ARRAY(DataTypes.STRING),
-    allowNull: false,
+    allowNull: false
   },
   banner: {
     type: DataTypes.STRING,
     allowNull: true
   }
+});
+
+Course.belongsTo(Category, {
+  foreignKey: 'category_id',
+  allowNull: false
+});
+
+Category.hasMany(Course, {
+  foreignKey: 'category_id',
+  allowNull: false
 });
 
 module.exports = Course;

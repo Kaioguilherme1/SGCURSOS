@@ -4,7 +4,6 @@ async function renderCourse() {
     let id = [urlParams.get('id')];
     const course = new Course()
     const courseJson = await course.get(false, id, null, [], false, false)
-    console.log(courseJson.courses)
 
     // Extrai os dados do JSON do curso
     let {name, description, duration_hours, category, tags, lessons} = courseJson.courses[0]

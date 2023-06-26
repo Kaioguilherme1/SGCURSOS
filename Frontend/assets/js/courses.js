@@ -14,7 +14,6 @@ async function deleteCourse(id) {
             alert(responseDelete.message);
             console.error(responseDelete.message);
         } else {
-            console.log(responseDelete);
             alert("Curso deletado com sucesso!");
             location.reload();
         }
@@ -24,7 +23,6 @@ async function deleteCourse(id) {
 }
 
 function renderCourses(courses) {
-  console.log("Renderizando cursos...");
   // Seleciona o elemento onde os cursos serão renderizados
   let coursesContainer = document.getElementById("courses-container");
   let headerContainer = document.getElementById("header-courses");
@@ -39,7 +37,6 @@ function renderCourses(courses) {
   coursesContainer.innerHTML = "";
   try {
     if (courses.length === 0) {
-      console.log("Nenhum curso encontrado!")
       let noCoursesCardHTML = `
         <div class="row vh-100 justify-content-center align-items-center">
           <div class="col d-flex justify-content-center align-items-center text-center">
@@ -116,7 +113,6 @@ function renderCourses(courses) {
 }
 
 function renderCoursesAdmin(courses) {
-  console.log("Renderizando cursos Admin...");
   // Seleciona o elemento onde os cursos serão renderizados
   let coursesContainer = document.getElementById("courses-container");
   let headerContainer = document.getElementById("header-courses");
@@ -131,7 +127,6 @@ function renderCoursesAdmin(courses) {
   coursesContainer.innerHTML = "";
   try {
     if (courses.length === 0) {
-      console.log("Nenhum curso encontrado!")
       let noCoursesCardHTML = `
         <div class="row vh-100 justify-content-center align-items-center">
           <div class="card" style="width: 40rem;">
@@ -213,9 +208,7 @@ async function getCourses() {
 
   const coursesJson = await courseApi.get(false, null, courseSearch, tagsSearch, categorySearch, false)
   const coursesList = coursesJson.courses
-  console.log(coursesList)
 
-  console.log([admin, accountType])
   if (admin === 'true' && (accountType === 'admin' || accountType === 'root')) {
     renderCoursesAdmin(coursesList);
   } else{

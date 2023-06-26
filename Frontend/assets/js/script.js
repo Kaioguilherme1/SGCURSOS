@@ -18,12 +18,8 @@ window.addEventListener('DOMContentLoaded', function() {
 
   if (isLoggedIn === 'true') {
 
-    console.log('Usuário logado');
-    console.log('Tipo de conta:', accountType);
-
     if (accountType === 'admin' || accountType === 'root') {
       showLoggedInAdmin(username);
-      console.log('Tipo de conta: admin ou root)');
       document.getElementById('btn-logout').addEventListener('click', function(event) {
         event.preventDefault();
         logout();
@@ -31,13 +27,12 @@ window.addEventListener('DOMContentLoaded', function() {
 
     } else if (accountType === 'aluno') {
         showLoggedInUser(username);
-      console.log('Tipo de conta: aluno');
       document.getElementById('btn-logout').addEventListener('click', function(event) {
         event.preventDefault();
         logout();
       });
     } else {
-      console.log('Tipo de conta desconhecido');
+      console.warn('Tipo de conta desconhecido');
     }
   } else {
     showLoggedOutState();
@@ -90,36 +85,31 @@ function showLoggedOutState() {
 }
 // Função para confim
 
-function modalConfirm(text) {
+function ConfirmModal() {
+  const modal = document.getElementById('confirmationModal');
+  const confirmBtn = document.getElementById('confirmBtn');
+  const cancelBtn = document.getElementById('cancelBtn');
+  const confirmationText = document.getElementById('confirmationText');
+
+  confirmationText.textContent = 'Tem certeza que deseja criar o curso?';
+
   return new Promise((resolve, reject) => {
-    const modal = document.getElementById('confirmationModal');
-    const confirmBtn = document.getElementById('confirmBtn');
-
-    const modalTitle = modal.querySelector('.modal-title');
-    const modalBody = modal.querySelector('.modal-body');
-
-    modalTitle.textContent = 'Confirmação';
-    modalBody.textContent = text;
-
-    const confirmar = () => {
-      modal.removeEventListener('hidden.bs.modal', reject);
+    confirmBtn.addEventListener('click', function () {
+      modal.style.display = 'none';
       resolve(true);
-      modal.style.display = 'none';
-    };
+    });
 
-    const cancelar = () => {
-      modal.removeEventListener('hidden.bs.modal', resolve);
+    cancelBtn.addEventListener('click', function () {
+      modal.style.display = 'none';
       resolve(false);
-      modal.style.display = 'none';
-    };
+    });
 
-    confirmBtn.addEventListener('click', confirmar);
-    modal.addEventListener('hidden.bs.modal', cancelar);
-
-    modal.classList.add('show');
-    modal.style.display = 'block';
+    const bootstrapModal = new bootstrap.Modal(modal);
+    bootstrapModal.show();
   });
 }
+
+
 
 
 // Função para fazer logout
