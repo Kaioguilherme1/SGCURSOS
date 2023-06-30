@@ -1,5 +1,6 @@
 const express = require("express");
 const registrationController = require("../controllers/RegistrationController");
+const certificateController = require("../controllers/CertificateController");
 const { body, validationResult } = require('express-validator');
 const { token } = require("morgan");
 
@@ -27,6 +28,22 @@ router.post('/get', async (req, res) => {
   let token = req.headers.authorization;
   let consult = req.body;
   const registrations = await registrationController.getRegistrations(token, consult);
+  res.json(registrations);
+});
+
+//-------------------------------------------------------------gerar certificado--------------------------------------------------------------
+
+router.post('/certificate', async (req, res) => {
+  let token = req.headers.authorization;
+  let consult = req.body;
+  const registrations = await certificateController.createCertificate(token, consult);
+  res.json(registrations);
+});
+
+//--------------------------------------------------------------Validar certificado--------------------------------------------------------------
+router.post('/certificate/validate', async (req, res) => {
+  let consult = req.body;
+  const registrations = await certificateController.validate(consult);
   res.json(registrations);
 });
 

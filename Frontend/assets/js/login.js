@@ -6,7 +6,7 @@ async function login() {
   const User = new user(); // Certifique-se de que a classe seja escrita corretamente (com a primeira letra em maiúsculo)
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
-
+  console.log(username, password);
   try {
     const Data = await User.login(username, password);
     const responseData = Data.login

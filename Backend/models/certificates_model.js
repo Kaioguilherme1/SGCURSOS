@@ -7,14 +7,35 @@ const Certificate = sequelize.define('Certificate', {
     primaryKey: true,
     autoIncrement: true
   },
- final_grade: {
-    type: DataTypes.FLOAT,
-    allowNull: true
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  course_name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  course_duration: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  registration_id: {
+    type: DataTypes.STRING,
+    allowNull: false
   },
   issued_at: {
     type: DataTypes.DATE,
     allowNull: false
   },
+  final_grade: {
+    type: DataTypes.FLOAT,
+    allowNull: true
+  },
+  validate_code: {
+    type: DataTypes.STRING,
+    allowNull: true
+  }
 });
+
 
 module.exports = Certificate;

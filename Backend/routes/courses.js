@@ -34,7 +34,6 @@ router.post('/get', async (req, res) => {
     let token = req.headers.authorization;
     let consult = req.body
     let courses = await CourseController.getCourses(token, consult);
-    console.log(courses)
     res.json(courses);
 });
 
@@ -54,6 +53,6 @@ router.delete('/:id', async (req, res) => {
     let token = req.headers.authorization;
     let id = req.params.id;
     let course = await CourseController.deleteCourse(id, token);
-    res.json(courses);
+    res.json(course);
 });
 module.exports = router;

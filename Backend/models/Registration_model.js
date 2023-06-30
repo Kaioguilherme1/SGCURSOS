@@ -18,7 +18,7 @@ const Registration = sequelize.define('Registration', {
     defaultValue: 0
   },
   final_grade: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.FLOAT,
     allowNull: true
   }
 });

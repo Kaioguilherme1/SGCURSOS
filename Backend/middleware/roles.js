@@ -1,12 +1,17 @@
 const {validateToken} = require("./AuthToken");
+const {requestLogger} = require("../config/logger");
 
 // Verifica se o usuário é admin ou é o dono do recurso
 async function hasPermissionUser(token, user_id) {
     try {
         // Verificar se o token é válido e decodificá-lo
         const decoded = await validateToken(token);
-        const userId = decoded.id;
-        const profile = decoded.profile;
+        if (!decoded.valid) {
+            requestLogger.error(`Token inválido: ${token}`);
+            return false;
+        }
+        const userId = decoded.payload.id;
+        const profile = decoded.payload.profile;
         return profile === `admin` || userId === user_id || profile === `root`;
     } catch (error) {
         console.error('Erro ao verificar o token:', error);
@@ -19,14 +24,12 @@ async function hasPermissionUser(token, user_id) {
 async function hasPermissionAdmin(token) {
     try {
         // Verificar se o token é válido e decodificá-lo
-        const decoded = await validateToken(token).payload;
-        if (decoded && decoded.profile) {
-            return { valid: true, payload: decoded };
-        } else {
-            return { valid: false, error: 'Token inválido' };
+        const decoded = await validateToken(token);
+        if (decoded.valid === false) {
+            requestLogger.error(`Token inválido: ${token}`);
+            return false;
         }
-        console.log(decoded)
-        console.log(profile)
+        const profile = decoded.payload.profile;
         return profile === `admin` || profile === `root`;
     } catch (error) {
         console.error('Erro ao verificar o token:', error);

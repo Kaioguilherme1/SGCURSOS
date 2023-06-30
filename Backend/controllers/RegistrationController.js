@@ -6,10 +6,26 @@ const {hasPermissionAdmin, hasPermissionUser} = require("../middleware/roles");
 const {requestLogger} = require("../config/logger");
 
 async function createRegistration(token, { user_id, course_id }) {
+
+  const register = await Registration.findOne({
+    where: {
+      User_id: user_id,
+      Course_id: course_id
+    }
+  });
+
+  if (register) {
+    requestLogger.error('Usuário já está matriculado no curso');
+    return {
+      error: true,
+      message: 'Usuário já está matriculado no curso'
+    };
+  }
+
   try {
     const registration = await Registration.create({
-      UserId: user_id,
-      CourseId: course_id
+      User_id: user_id,
+      Course_id: course_id
     });
 
     requestLogger.info('Matrícula criada');
@@ -191,6 +207,7 @@ async function deleteRegistration(id, token) {
     }
 
 }
+
 module.exports = {
     createRegistration,
     getRegistrations,

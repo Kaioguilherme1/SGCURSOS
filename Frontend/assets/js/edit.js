@@ -344,8 +344,8 @@ async function renderCreateCourse() {
 
 async function renderEditCourse() {
     const data = await courseApi.get(false, courseId);
-    const {name, tags, duration_hours, description, participants, lessons} = data.courses[0];
-    const enrolled_count = participants.length;
+    const {name, tags, duration_hours, description, participants, lessons} = data.courses[0].course;
+    const enrolled_count = data.courses[0].participants.length;
     tagsArray = tags;
     topicArray = lessons;
     const headerContent = `

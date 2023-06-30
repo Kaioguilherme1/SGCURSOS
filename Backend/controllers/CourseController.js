@@ -66,7 +66,7 @@ async function updateCourse(id, token, data) {
 async function getCourses(token, consult) {
   let { all, id, name, tags, category, participants } = consult;
 
-  if (participants && !await hasPermissionAdmin()) {
+  if (participants && !await hasPermissionAdmin(token)) {
     requestLogger.error('Tentativa de acessar cursos sem permissão de administrador');
     return {
       error: true,
@@ -81,29 +81,26 @@ async function getCourses(token, consult) {
           [Op.and]: [
             id ? { id } : {},
             name ? { name } : {},
+            category ? { '$Category.name$': category } : {},
             (tags && tags.length > 0) ? { tags: { [Op.contains]: tags } } : {}
           ]
         };
 
-    console.log("Consulta" + whereClause)
-    let includeClause = null;
-
-
-    if (category) {
-      includeClause = [
-        {
-          model: Category,
-          attributes: ['name', 'description']
-        }
-      ];
+    let includeClause = [
+    {
+      model: Category,
+      attributes: ['name', 'description']
     }
-   const courses = await Course.findAll({
+    ];
+
+   let courses = await Course.findAll({
       where: whereClause,
       include: includeClause
     });
 
+    let coursesList = [];
     try {
-      for (const course of courses) {
+      for (let course of courses) {
         const participantsList = await Registration.findAll({
           where: {
             Course_id: course.id
@@ -118,9 +115,16 @@ async function getCourses(token, consult) {
         });
 
         if (participants) {
-          course.participants =  participantsList.map(participant => [participant.id, participant.User.name]);
+          coursesList.push({
+              course,
+              participants: participantsList.map(participant => [participant.id, participant.User.name])
+          });
+
         } else {
-          course.participants = participantsList.map(() => 'confidencial');
+            coursesList.push({
+              course,
+              participants: participantsList.map(() => 'confidencial')
+          });
         }
       }
     } catch (error) {
@@ -136,7 +140,7 @@ async function getCourses(token, consult) {
     return {
       error: false,
       message: `${courses.length} Cursos encontrados`,
-      courses: courses
+      courses: coursesList
     };
   } catch (error) {
     requestLogger.error('Erro ao buscar cursos: ' + error.message);

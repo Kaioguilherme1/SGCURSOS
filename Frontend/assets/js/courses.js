@@ -73,7 +73,7 @@ function renderCourses(courses) {
 
       courses.forEach(function (course) {
         // Extrai os dados do JSON do curso
-        let {name, tags, description, duration_hours, id} = course;
+        let {name, tags, description, duration_hours, id} = course.course;
 
         let courseCardHTML = `
           <div class="col d-flex justify-content-center align-items-center" style="padding: 10px;">
@@ -86,7 +86,7 @@ function renderCourses(courses) {
                   </div>
                   <div class="col d-flex justify-content-center">
                     <div class="d-flex flex-wrap justify-content-center">
-                      ${tags.map(tag => `<a href="courses.html?tags=${tag}" type="button" class="btn btn-outline-primary btn-sm">${tag}</a>`).join('')}
+                      ${tags.map(tag => `<a href="courses.html?tags=${tag}" type="button" class="btn btn-outline-primary btn-sm" style="margin: 2px">${tag}</a>`).join('')}
                     </div>
                   </div>
                 </div>
@@ -165,8 +165,8 @@ function renderCoursesAdmin(courses) {
 
       courses.forEach(function (course) {
         // Extrai os dados do JSON do curso
-        let {name, tags, participants, duration_hours, id} = course;
-        const numParticipants = participants.length;
+        let {name, tags, duration_hours, id} = course.course;
+        const numParticipants = course.participants.length;
         let courseCardHTML = `
           <div class="row mt-3 justify-content-center" style="background-color: transparent; border-bottom: 1px solid #2787ff; margin: 5px; padding: 5px;">
             <div class="col align-self-center">
