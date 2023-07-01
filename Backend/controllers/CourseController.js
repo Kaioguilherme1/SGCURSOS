@@ -5,6 +5,7 @@ const {Op} = require("sequelize");
 const TokenController = require("../middleware/AuthToken");
 const {hasPermissionAdmin, hasPermissionUser} = require("../middleware/roles");
 const {requestLogger} = require("../config/logger");
+const {Certificate} = require("../models");
 
 async function createCourse(token ,data) {
     if (hasPermissionAdmin(token)){
@@ -108,16 +109,19 @@ async function getCourses(token, consult) {
           include: [
             {
               model: User,
-              attributes: ['name']
+              attributes: ['id' ,'name']
+            },
+            {
+              model: Certificate,
+              attributes: ["validate_code"]
             }
           ],
-          attributes: ['id']
         });
 
         if (participants) {
           coursesList.push({
               course,
-              participants: participantsList.map(participant => [participant.id, participant.User.name])
+              participants: participantsList.map(participant => participant)
           });
 
         } else {

@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Certificado</title>
+    <title>Validar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="./assets/css/profile.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/buttons.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/inputs.css">
-    <link rel="stylesheet" type="text/css" href="./assets/css/certificate.css">
     <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
 
 </head>
@@ -31,7 +30,7 @@
                 <li class="nav-item"><a class="nav-link" href="courses.html">Cursos</a></li>
                 <li class="nav-item"><a class="nav-link" href="about.html">Sobre</a></li>
                 <li class="nav-item"><a class="nav-link" href="contact.html">Contato</a></li>
-                <li class="nav-item"><a class="nav-link" href="validar.html">Validar</a></li>
+                <li class="nav-item"><a class="nav-link active" style=" color: #ffcc00;" aria-current="page" href="Validar.html">Validar</a></li>
               </ul>
 
               <div class="user-profile">
@@ -43,34 +42,30 @@
         </nav>
   </header>
   <main class="main">
-        <div class="certificate">
-          <div class="row flex certificate-header">
-              <div class="col">
-                  <img src="assets/img/icon.png" alt="Logo da Instituição" class="certificate-logo" style="width: 80px; height: 80px; float: left; margin-right: 10px;">
+      <div class="d-flex justify-content-center align-items-center" style="margin-top: 50px">
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-body">
+                <form>
+                  <div class="mb-4 text-center">
+                    <h2 class="form-label">Código de Validação</h2>
+                    <div class="input-group">
+                      <input type="text" class="form-control code-input" id="code-part-1" maxlength="4" placeholder="XXXX"  style="font-size: 40px" required>
+                      <div class="input-group-text" style="background: none; border: none;" >-</div>
+                      <input type="text" class="form-control code-input" id="code-part-2" maxlength="4" placeholder="XXXX" style="font-size: 40px" required>
+                      <div class="input-group-text" style="background: none; border: none;" >-</div>
+                      <input type="text" class="form-control code-input" id="code-part-3" maxlength="4" placeholder="XXXX" style="font-size: 40px" required>
+                      <div class="input-group-text" style="background: none; border: none;" >-</div>
+                      <input type="text" class="form-control code-input" id="code-part-4" maxlength="4" placeholder="XXXX" style="font-size: 40px" required>
+                    </div>
+                    <small class="form-text text-muted">Insira o código de validação fornecido para verificar a autenticidade do certificado. O formato deve ser XXX-XXXX-XXX-XXX.</small>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Verificar</button>
+                </form>
               </div>
-              <div class="col" style="width: 80%">
-                  <h3>SGCURSOS</h3>
-                  <h1 class="certificate-title">Certificado de Conclusão</h1>
-                  <h3 class="certificate-subtitle" id="certificate-course-name">Nome do Curso</h3>
-              </div>
-              <div class="col">
-                  <img src="assets/icons/certificate-80.png" alt="Selo" class="certificate-image" style="width: 80px; height: 80px; float: right; margin-left: 10px;">
-              </div>
+            </div>
           </div>
-          <p class="certificate-text" id="certificate-text">Este certificado é concedido a
-           Nome do Destinatário pelo numero de matricula (0000000) Pela conclusão do Nome do Curso com carga horária de 00 horas.</p>
-          </p>
-          <p class="certificate-text">Com notal Final:</p>
-          <h3 class="certificate-subtitle" id="certificate-grade">nota</h3>
-          <p class="certificate-text" id="certificate-date">Concluído em: Data de Conclusão</p>
-          <p class="certificate-code" id="certificate-code">Código de Verificação <br>XXXX-XXXX-XXXX-XXXX</p>
-          <a> para verificar a autenticidade deste certificado acesse: <a href="validar.html">www.sgcursos.com.br/validar</a></a>
         </div>
-
-        <div class="print-button" style="text-align: center; margin-top: 20px;">
-          <button onclick="window.print()" style="padding: 10px 20px; font-size: 16px; background-color: #4285f4; color: #fff; border: none; border-radius: 4px; cursor: pointer;">Imprimir Certificado</button>
-        </div>
-
   </main>
   <footer>
     <!-- Conteúdo do footer -->
@@ -78,7 +73,7 @@
   </footer>
   <script src="assets/js/script.js"></script>
   <script src="assets/js/api.js"></script>
-  <script src="assets/js/certificate.js"></script>
+  <script src="assets/js/validar.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 
 </body>

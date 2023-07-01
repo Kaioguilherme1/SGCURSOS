@@ -6,11 +6,24 @@ const {hasPermissionAdmin, hasPermissionUser} = require("../middleware/roles");
 const {requestLogger} = require("../config/logger");
 
 async function createRegistration(token, { user_id, course_id }) {
+  let user = null;
+  let course = null;
+  user = user_id;
+  course = course_id;
+  if (user_id && course_id) {
+  user = user_id;
+  course = course_id;
+  } else {
+      return {
+          error: true,
+          message: 'Usuário ou curso não informado'
+      };
+  }
 
   const register = await Registration.findOne({
     where: {
-      User_id: user_id,
-      Course_id: course_id
+      User_id: user,
+      Course_id: course
     }
   });
 
@@ -56,14 +69,23 @@ async function updateRegistration(id, token, data) {
     }
 
     if (!await hasPermissionAdmin(token)) {
+        requestLogger.error('Tentativa de atualizar matrícula sem permissão de administrador');
       // Remover a atualização da nota final se o usuário não for um administrador
       delete data.final_grade;
     }
 
     // Remover a atualização do certificado
     delete data.certificate;
-
-    await registration.update(data);
+    try {
+        await registration.update(data);
+    }catch (error){
+        requestLogger.error('Erro ao atualizar matrícula: ' + error.message);
+        return {
+            error: true,
+            message: 'Erro ao atualizar matrícula',
+            error_message: error.message
+        };
+    }
 
     requestLogger.info('Matrícula atualizada');
     return {

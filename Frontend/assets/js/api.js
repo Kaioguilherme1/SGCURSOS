@@ -43,7 +43,7 @@ class user{
         return "Preencha todos os campos!"
       }
 
-      fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/users/register`, {
+      return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/users/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -109,7 +109,74 @@ class user{
         }
     }
 
-    async
+    async createRegister(course_id){
+        const data = {
+            user_id: this.id,
+            course_id: course_id
+        }
+        try{
+            return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/register/create`, {
+                method: 'POST',
+                headers: {
+                    'authorization': this.token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data),
+             }).then(response => response.json())
+                .then(responseData => {
+                    return responseData;
+                })
+        } catch (error) {
+            console.error('Error:', error);
+            return error
+        }
+    }
+    async getRegister (registerId){
+        const data = {
+                            "id": registerId,
+                            "course": null,
+                            "user": null,
+                            "certificate": true,
+                            "all": true
+                          };
+
+        try{
+             return  await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/register/get`, {
+                method: 'POST',
+                headers: {
+                    'authorization': this.token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data),
+             }).then(response => response.json())
+                .then(responseData => {
+                    return responseData;
+                })
+        } catch (error) {
+            console.error('Error:', error);
+            return error
+        }
+    }
+
+    async editRegister(id, data){
+        try{
+            return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/register/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'authorization': this.token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data),
+             }).then(response => response.json())
+                .then(responseData => {
+                    return responseData;
+                })
+        } catch (error) {
+            console.error('Error:', error);
+            return error
+        }
+    }
+
 }
 
 class Course {
@@ -156,6 +223,39 @@ class Course {
       });
   }
 
+  async endCourse() {
+      const courses = await this.get(false, this.id, null, [], false, true);
+      const course = courses.courses[0];
+      const participants = course.participants;
+
+      // gerando os certificados
+      for (const participant of participants) {
+          await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/register/certificate`, {
+              method: 'POST',
+              headers: {
+                  'authorization': this.token,
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                   "registrationId": participant.id,
+              }),
+          }).then(response => response.json())
+              .then(responseData => {
+                  if (responseData.error === true) {
+                     if (responseData.message !== 'Usuário não possui nota suficiente para gerar certificado' || responseData.message !== 'Usuário não possui progresso suficiente para gerar certificado') {
+                         alert(responseData.message)
+                     }
+                  }
+              })
+              .catch(error => {
+                  console.error('Erro:', error);
+                  throw error;
+              });
+      }
+
+      return courses.courses[0];
+  }
+
   async delete(id) {
     return fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/courses/${id}`, {
       method: 'DELETE',
@@ -174,4 +274,24 @@ class Course {
       throw error;
     });
   }
+}
+
+async function validate(code) {
+  const data = {"validate_code": code };
+    try {
+        return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/register/certificate/validate`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+        }).then(response => response.json())
+        .then(responseData => {
+            return responseData;
+        })
+    } catch (error) {
+        console.error('Error:', error);
+        return error
+    }
+
 }

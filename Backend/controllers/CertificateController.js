@@ -58,8 +58,8 @@ async function createCertificate(token, consult) {
                 }
             }
 
-            if (registration.progress_time > 90) {
-                requestLogger.log('info', 'Usuário possui progresso suficiente para gerar certificado', {registration: registration.id})
+            if (registration.progress_time <= 90) {
+                requestLogger.log('info', 'Usuário não possui progresso suficiente para gerar certificado', {registration: registration.id})
                 return {
                     error: true,
                     message: 'Usuário não possui progresso suficiente para gerar certificado'

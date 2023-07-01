@@ -7,15 +7,13 @@ const { token } = require("morgan");
 const router = express.Router();
 
 //--------------------------------------------------------------criar--------------------------------------------------------------
-router.post('/register', [
-  body('id').notEmpty().withMessage('O campo ID é obrigatório'),
+router.post('/create', [
   body('user_id').notEmpty().withMessage('O campo user_id é obrigatório'),
   body('course_id').notEmpty().withMessage('O campo course_id é obrigatório'),
 ], async (req, res) => {
-  const { id, user_id, course_id, progress_time, final_grade } = req.body;
+  const {user_id, course_id} = req.body;
   let token = req.headers.authorization;
   const registration = await registrationController.createRegistration(token, {
-    id,
     user_id,
     course_id,
   });

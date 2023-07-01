@@ -30,6 +30,7 @@
                 <li class="nav-item"><a class="nav-link" href="courses.html">Cursos</a></li>
                 <li class="nav-item"><a class="nav-link" href="about.html">Sobre</a></li>
                 <li class="nav-item"><a class="nav-link" href="contact.html">Contato</a></li>
+                <li class="nav-item"><a class="nav-link" href="validar.html">Validar</a></li>
               </ul>
 
               <div class="user-profile">
@@ -41,7 +42,7 @@
         </nav>
   </header>
   <main class="main">
-      <div class="container text-center" style="min-width: 60%; margin-bottom: 100px">
+      <div class="container text-center" id="course-body" style="min-width: 60%; margin-bottom: 100px">
           <div class="row" style="background: linear-gradient(to right, #478bd1, #71c7ec); border-radius: 10px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);">
               <div class="row">
                 <h1 class="pb-3" id="course-title" style="text-align: left; color: white;">Curso de Node.js</h1>
@@ -75,12 +76,13 @@
             </div>
           </div>
 
-          <div class="row align-items-end pt-3">
-            <div class="col"></div>
+          <div class="row align-items-end pt-3" style="margin-bottom: 20px">
+            <div class="col text-start" id="btn-end"></div>
             <div class="col text-end">
-              <button type="button" class="btn btn-success">Matricule-se</button>
+              <button type="button" class="btn btn-success" id="btn-register" onclick="registerCourse()">Matricule-se</button>
             </div>
           </div>
+
         </div>
   </main>
 
