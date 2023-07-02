@@ -1,6 +1,6 @@
 
 // endereco da api
-// const APT_PROTOCOL = 'http'; // process.env.APT_PROTOCOL
+// const API_PROTOCOL = 'http'; // process.env.API_PROTOCOL
 // const API_URL = 'localhost'; // process.env.API_URL
 // const API_PORT = 3000; // process.env.API_PORT
 
@@ -42,7 +42,7 @@ class user{
         return "Preencha todos os campos!"
       }
 
-      return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/users/register`, {
+      return await fetch(`${API_PROTOCOL}://${API_URL}:${API_PORT}/users/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -73,7 +73,7 @@ class user{
 
           // Enviar os dados para o backend
           try{
-              return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/users/login`, {
+              return await fetch(`${API_PROTOCOL}://${API_URL}:${API_PORT}/users/login`, {
                   method: 'POST',
                   headers: {
                       'Content-Type': 'application/json'
@@ -92,7 +92,7 @@ class user{
 
     async getAll(){
         try{
-            return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/users/getAll`, {
+            return await fetch(`${API_PROTOCOL}://${API_URL}:${API_PORT}/users/getAll`, {
                 method: 'GET',
                 headers: {
                     'authorization': this.token,
@@ -110,7 +110,7 @@ class user{
 
     async edit(data){
         try{
-            return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/users/${this.id}`, {
+            return await fetch(`${API_PROTOCOL}://${API_URL}:${API_PORT}/users/${this.id}`, {
                 method: 'PUT',
                 headers: {
                     'authorization': this.token,
@@ -129,7 +129,7 @@ class user{
 
     async get(id){
         try{
-            return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/users/${id}`, {
+            return await fetch(`${API_PROTOCOL}://${API_URL}:${API_PORT}/users/${id}`, {
                 method: 'GET',
                 headers: {
                     'authorization': this.token,
@@ -151,7 +151,7 @@ class user{
             course_id: course_id
         }
         try{
-            return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/register/create`, {
+            return await fetch(`${API_PROTOCOL}://${API_URL}:${API_PORT}/register/create`, {
                 method: 'POST',
                 headers: {
                     'authorization': this.token,
@@ -185,7 +185,7 @@ class user{
 
         console.log(data)
         try{
-             return  await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/register/get`, {
+             return  await fetch(`${API_PROTOCOL}://${API_URL}:${API_PORT}/register/get`, {
                 method: 'POST',
                 headers: {
                     'authorization': this.token,
@@ -204,7 +204,7 @@ class user{
 
     async editRegister(id, data){
         try{
-            return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/register/${id}`, {
+            return await fetch(`${API_PROTOCOL}://${API_URL}:${API_PORT}/register/${id}`, {
                 method: 'PUT',
                 headers: {
                     'authorization': this.token,
@@ -243,7 +243,7 @@ class Course {
           "lessons": lessons
       };
       try {
-            return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/courses/register`, {
+            return await fetch(`${API_PROTOCOL}://${API_URL}:${API_PORT}/courses/register`, {
                 method: 'POST',
                 headers: {
                     'authorization': this.token,
@@ -262,7 +262,7 @@ class Course {
 
   async edit(data){
         try{
-            return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/courses/${this.id}`, {
+            return await fetch(`${API_PROTOCOL}://${API_URL}:${API_PORT}/courses/${this.id}`, {
                 method: 'PUT',
                 headers: {
                     'authorization': this.token,
@@ -291,11 +291,11 @@ class Course {
   async get(all = true, id = null, name = null, tags = [], category = false, participants = false) {
     let requestGET = {};
     if (all && id == null && name == null && tags.length === 0) {
-      requestGET = { url: `${APT_PROTOCOL}://${API_URL}:${API_PORT}/courses/get`, method: 'POST' , body: {all: true} };
+      requestGET = { url: `${API_PROTOCOL}://${API_URL}:${API_PORT}/courses/get`, method: 'POST' , body: {all: true} };
     } else if (!participants) {
-      requestGET = { url: `${APT_PROTOCOL}://${API_URL}:${API_PORT}/courses/get`, method: 'POST', body: { id, name, tags, category, participants } };
+      requestGET = { url: `${API_PROTOCOL}://${API_URL}:${API_PORT}/courses/get`, method: 'POST', body: { id, name, tags, category, participants } };
     } else if (this.token !== '' && participants) {
-      requestGET = { url: `${APT_PROTOCOL}://${API_URL}:${API_PORT}/courses/get`, method: 'POST', body: { token: this.token, id, name, tags, category, participants } };
+      requestGET = { url: `${API_PROTOCOL}://${API_URL}:${API_PORT}/courses/get`, method: 'POST', body: { token: this.token, id, name, tags, category, participants } };
     }
     return fetch(requestGET.url, {
         headers: {
@@ -329,7 +329,7 @@ class Course {
 
       // gerando os certificados
       for (const participant of participants) {
-          await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/register/certificate`, {
+          await fetch(`${API_PROTOCOL}://${API_URL}:${API_PORT}/register/certificate`, {
               method: 'POST',
               headers: {
                   'authorization': this.token,
@@ -356,7 +356,7 @@ class Course {
   }
 
   async delete(id) {
-    return fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/courses/${id}`, {
+    return fetch(`${API_PROTOCOL}://${API_URL}:${API_PORT}/courses/${id}`, {
       method: 'DELETE',
       headers: {
           'authorization': this.token,
@@ -378,7 +378,7 @@ class Course {
 async function validate(code) {
   const data = {"validate_code": code };
     try {
-        return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/register/certificate/validate`, {
+        return await fetch(`${API_PROTOCOL}://${API_URL}:${API_PORT}/register/certificate/validate`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -397,7 +397,7 @@ async function validate(code) {
 
 async function getCategory(data){
     try {
-        return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/category/get`, {
+        return await fetch(`${API_PROTOCOL}://${API_URL}:${API_PORT}/category/get`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -415,7 +415,7 @@ async function getCategory(data){
 
 async function createCategoryApi(token ,data) {
     try {
-        return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/category/create`, {
+        return await fetch(`${API_PROTOCOL}://${API_URL}:${API_PORT}/category/create`, {
             method: 'POST',
             headers: {
                 'authorization': token,

@@ -14,7 +14,7 @@ async function hasPermissionUser(token, user_id) {
         const profile = decoded.payload.profile;
         const suspended = decoded.payload.suspended;
         // console.log(`userId: ${userId} | user_id: ${user_id} | profile: ${profile} | decoded: ${JSON.stringify(decoded)} | suspended: ${suspended}`);
-        return (profile === `admin` || parseInt(userId) === parseInt(user_id) || profile === `root`) && suspended === false;
+        return ((profile === `admin` || parseInt(userId) === parseInt(user_id) || profile === `root`) && suspended === false);
     } catch (error) {
         console.error('Erro ao verificar o token:', error);
         return false; // Ocorreu um erro na verificação do token
@@ -32,7 +32,7 @@ async function hasPermissionAdmin(token) {
         }
         const profile = decoded.payload.profile;
         const suspended = decoded.payload.suspended;
-        return (profile === `admin` || profile === `root`) && suspended === false;
+        return ((profile === `admin` || profile === `root`) && suspended === false);
     } catch (error) {
         console.error('Erro ao verificar o token:', error);
         return false; // Ocorreu um erro na verificação do token

@@ -1,7 +1,7 @@
 FROM nginx
 
 COPY . /usr/share/nginx/html/
-COPY ./nginx_conf/ /etc/nginx/
+#COPY ./nginx_conf/ /etc/nginx/
 
 WORKDIR /usr/share/nginx/html/
 
