@@ -24,17 +24,16 @@ async function register() {
   const email = document.getElementById('email').value;
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
-  const profile = "aluno"
   const image_path = "path";
 
-  const responseData = await User.register(name, number, email, username, password, profile, image_path);
+  const responseData = await User.register(name, number, email, username, password, image_path);
   console.log(responseData);
   if (typeof responseData === 'string') {
     alert(responseData);
   } else if (responseData.error === 'true') {
     alert(responseData.message);
   } else {
-    alert(responseData.message);
-    // window.location.href = 'login.html';
+    alert("Usuario criado com sucesso!");
+    window.location.href = 'login.html';
   }
 }

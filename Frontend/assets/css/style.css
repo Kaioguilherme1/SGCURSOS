@@ -304,7 +304,7 @@ footer {
 }
 
 .glass-container {
-  background-color: rgba(128, 128, 128, 0.2);
+  background-color: rgba(220, 213, 213, 0.2);
   backdrop-filter: blur(2px);
   border-radius: 8px;
   transition: background-color 0.3s ease;
@@ -313,5 +313,5 @@ footer {
 }
 
 .glass-container:hover {
-  background-color: rgba(128, 128, 128, 0.3);
+  background-color: rgba(202, 198, 198, 0.3);
 }

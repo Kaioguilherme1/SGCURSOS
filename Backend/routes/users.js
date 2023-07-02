@@ -63,11 +63,9 @@ router.get('/:id', async (req, res) => {
     try {
         const token = req.headers.authorization;
         const reqId = req.params.id;
-        console.log(reqId, token)
         const response = await UserController.getUserById(token, reqId);
         res.json({response});
     }catch (error) {
-        console.log(error);
         res.json({
             error: true,
             message: 'Erro ao obter usuário' + error,
@@ -86,7 +84,6 @@ router.put('/:id', async (req, res) => {
     const response = await UserController.updateUser(token, reqId, user);
     res.json({response});
    }catch (error) {
-    console.log(error);
     res.json({
         error: true,
         message: 'Erro ao atualizar usuário' + error,

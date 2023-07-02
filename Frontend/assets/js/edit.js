@@ -17,7 +17,8 @@ let userApi = new user(userId, token, userName, userProfile);
 
 let tagsArray = []; // Array para armazenar as tags
 let topicArray = []; // Array para armazenar os topicos
-let categoryList = ["Programação", "Design", "Marketing", "Finanças", "Empreendedorismo", "Outros"];
+let categoryList = []; // Array para armazenar as categorias
+
 
 //--------------------------------------- funções das tags ---------------------------------------
 function addTag() {
@@ -74,18 +75,20 @@ function renderTopic() {
 }
 
 //--------------------------------------- funções do modal ---------------------------------------
-function createCategory() {
+async function createCategory() {
   const modal = document.getElementById('modal');
   modal.style.display = 'block';
 
-  document.getElementById('create-category-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const categoryName = document.getElementById('category-name').value;
-    const categoryDescription = document.getElementById('category-description').value;
-    // Aqui você pode executar a lógica para criar a categoria com o nome e descrição informados
-    console.log('Nome:', categoryName);
-    console.log('Descrição:', categoryDescription);
-    closeCreateCategoryModal();
+  document.getElementById('create-category-form').addEventListener('submit', async function (event) {
+      event.preventDefault();
+      const categoryName = document.getElementById('category-name').value;
+      const categoryDescription = document.getElementById('category-description').value;
+      // Aqui você pode executar a lógica para criar a categoria com o nome e descrição informados
+      console.log('Nome:', categoryName);
+      console.log('Descrição:', categoryDescription);
+      const response = await createCategoryApi(token,{ "name": categoryName, "description": categoryDescription });
+      alert(response.category.message);
+      closeCreateCategoryModal();
   });
 }
 
@@ -101,7 +104,6 @@ async function saveForm() {
   // Fetch all the forms we want to apply custom Bootstrap validation styles to
   const userData = {};
   const forms = document.querySelectorAll('.needs-validation');
-
   // Loop over them and prevent submission
   Array.from(forms).forEach(form => {
     form.addEventListener('submit', event => {
@@ -125,45 +127,55 @@ async function saveForm() {
       const name = document.getElementById('input-name').value;
       const description = document.getElementById('input-description').value;
       const duration_hours = document.getElementById('input-duration_hours').value;
-      const category = document.getElementById('input-category').value;
+      const category = parseInt(document.getElementById('input-category').value);
 
-      const data = {
-        banner: banner,
-        name: name,
-        description: description,
-        duration_hours: duration_hours,
-        category: category,
-        tags: tagsArray,
-        topics: topicArray
-      };
-
-      await createCourse(data);
+      const response = await courseApi.create(name, description, tagsArray, category, banner, duration_hours, topicArray)
+      alert(response.course.message)
     }
   } else if (create !== 'true' && courseId !== null && (userProfile === 'admin' || userProfile === 'root')) {
 
-    if (tagsArray.length === 0) {
-      alert('É necessário adicionar pelo menos uma tag');
-      return;
-    }
-
     if (confirm('Deseja atualizar o curso?')) {
-      const banner = document.getElementById('input-banner').files[0];
-      const name = document.getElementById('input-name').value;
-      const description = document.getElementById('input-description').value;
-      const duration_hours = document.getElementById('input-duration_hours').value;
-      const category = document.getElementById('input-category').value;
+        //Armazene os valores iniciais aqui
+        const bannerInput = document.getElementById('input-banner');
+        const nameInput = document.getElementById('input-name');
+        const descriptionInput = document.getElementById('input-description');
+        const durationInput = document.getElementById('input-duration_hours');
+        const categoryInput = document.getElementById('input-category');
 
-      const data = {
-        banner: banner,
-        name: name,
-        description: description,
-        duration_hours: duration_hours,
-        category: category,
-        tags: tagsArray,
-        topics: topicArray
-      };
+        const data = {
+            banner: bannerInput.files[0],
+            name: nameInput.value,
+            description: descriptionInput.value,
+            duration_hours: durationInput.value,
+            category: parseInt(categoryInput.value),
+        };
 
-      await updateCourse(data);
+        // Verifica se o valor do input foi alterado
+        if (data.banner !== '') {
+            delete data.banner;
+        }
+        if (data.name === '') {
+            delete data.name;
+        }
+        if (data.description === '') {
+            delete data.description;
+        }
+        if (data.duration_hours === '') {
+            delete data.duration_hours;
+        }
+        if (data.category === 'selecione') {
+            delete data.category;
+        }
+
+
+        // Adicione as propriedades tags e topics ao objeto data
+        data.tags = tagsArray;
+        data.topics = topicArray;
+        console.log(data)
+        const response = await courseApi.edit(data)
+        console.log(response)
+        alert(response.message)
+
     }
   } else if (userProfile === 'admin' || userProfile === 'root') {
     // Atualiza o perfil do usuário admin
@@ -176,7 +188,7 @@ async function saveForm() {
     userData.profile = document.getElementById('input-admin').checked ? 'admin' : undefined;
 
     if (confirm('Deseja atualizar o perfil?')) {
-      await updateProfile(userData);
+      await updateUser(userData);
     }
   } else if (userProfile === 'student') {
     userData.name = document.getElementById('input-name').value || undefined;
@@ -188,30 +200,27 @@ async function saveForm() {
     userData.profile = document.getElementById('input-admin').checked ? 'admin' : undefined;
 
     if (confirm('Deseja atualizar o perfil?')) {
-      await updateStudentProfile(userData);
+      console.log(userData);
     }
   } else {
     window.location.href = 'index.html';
   }
 }
 
-async function createCourse(data) {
-
+async function updateUser(data){
+    const response = await userApi.edit(data);
+    if (response.response) {
+      alert('Perfil atualizado com sucesso!');
+      window.location.href = 'index.html';
+    } else {
+      alert(response.error);
+    }
 }
 
-async function updateCourse(data) {
-
-}
-
-async function updateProfile(data) {
-
-}
-
-async function updateStudentProfile(data) {
-
-}
 //--------------------------------------- funções de rendenização ---------------------------------------
 async function renderCreateCourse() {
+    const response = await getCategory({"all": true, "id": null, "name": null});
+    categoryList = response.categories.map(category => category);
     const headerContent = `
         <div class="row align-items-start" style="max-width: 60%">
           <h1>Criar Curso</h1>
@@ -290,10 +299,13 @@ async function renderCreateCourse() {
                 <div class="col">
                   <label for="duration_hours" class="form-label">Categoria Do Curso</label>
                   <select class="form-select" id="input-category" aria-label="Default select example" required>
-                    <option selected disabled value="">Selecione...</option>
-                    ${categoryList.map((option, index) => `<option value="${index + 1}">${option}</option>`).join('')}
-                    <option type="button" class="btn btn-primary" onclick="createCategory()">Criar Categoria</option>
+                      <option selected disabled value="">Selecione...</option>
+                      ${categoryList.map((option) => `<option value="${option.id}">${option.name}</option>`).join('')}
+                      <optgroup label="Criar Categoria">
+                        <option value="create">Criar Categoria</option>
+                      </optgroup>
                   </select>
+
                   <div class="valid-feedback">
                     Parece bom!
                   </div>
@@ -303,7 +315,7 @@ async function renderCreateCourse() {
                 </div>
               </div>
               <div class="row justify-content-end" style="padding: 30px">
-                <button type="submit" class="btn btn-primary" style="max-width: 100px; " onclick="saveForm()">Salvar</button>
+                <button type="submit" class="btn btn-primary" style="max-width: 100px; " onclick="event.preventDefault(); (async () => { await saveForm(); })()">Salvar</button>
               </div>
             </fieldset>
           </form>
@@ -343,9 +355,12 @@ async function renderCreateCourse() {
 }
 
 async function renderEditCourse() {
+    const response = await getCategory({"all": true, "id": null, "name": null});
+    categoryList = response.categories.map(category => category);
     const data = await courseApi.get(false, courseId);
-    const {name, tags, duration_hours, description, participants, lessons} = data.courses[0].course;
+    const {name, tags, duration_hours, description, category_id, lessons} = data.courses[0].course;
     const enrolled_count = data.courses[0].participants.length;
+    const selectedID = category_id
     tagsArray = tags;
     topicArray = lessons;
     const headerContent = `
@@ -401,15 +416,17 @@ async function renderEditCourse() {
                   </div>
                   <div class="col">
                     <label for="duration_hours" class="form-label">Categoria Do Curso</label>
-                    <select class="form-select" aria-label="Default select example">
-                        <option id="input-category" selected>Selecione</option>
-                        ${categoryList.map((option, index) => `<option value="${index + 1}">${option}</option>`).join('')}
-                        <option type="button" class="btn btn-primary" onclick="createCategory()">Criar Categoria</option>
+                    <select class="form-select" id="input-category" aria-label="Default select example" required>
+                      <option selected disabled value="">Selecione...</option>
+                      ${categoryList.map((option) => `<option value="${option.id}">${option.name}</option>`).join('')}
                     </select>
+                    
+                    <button type="button" class="btn btn-primary" onclick="createCategory()">Criar Categoria</button>
+
                   </div>
                 </div>
                 <div class="row justify-content-end" style="padding: 30px">
-                    <button type="submit" class="btn btn-primary" style="max-width: 100px;" onclick="saveForm()">Salvar</button>
+                    <button type="submit" class="btn btn-primary" style="max-width: 100px;" onclick="event.preventDefault(); (async () => { await saveForm(); })()">Salvar</button>
                 </div>
               </fieldset>
             </form>
@@ -437,14 +454,26 @@ async function renderEditCourse() {
 
     `;
 
-    const tagsContainer = document.getElementById('tags-container');
-    const addTagButton = document.getElementById('add-tag-button');
-
+    // const tagsContainer = document.getElementById('tags-container');
+    // const addTagButton = document.getElementById('add-tag-button');
     headerEdit.insertAdjacentHTML('afterbegin', headerContent);
     containerEdit.insertAdjacentHTML('beforeend', containerContent);
     document.title = name;
     renderTopic();
     renderTags();
+
+    const selectElement = document.getElementById('input-category');
+    // Itera sobre as opções do select
+    for (let i = 0; i < selectElement.options.length; i++) {
+      const option = selectElement.options[i];
+
+      // Verifica se o valor da opção é igual ao ID selecionado
+      if (option.value === selectedID.toString()) {
+        // Define a opção como selecionada
+        option.selected = true;
+        break; // Interrompe o loop após encontrar a opção correta
+      }
+    }
 }
 
 async function renderEditProfileAdmin() {
@@ -514,7 +543,7 @@ async function renderEditProfileAdmin() {
                     </div>
                     <div class="col">
                       <div class="row justify-content-end" style="padding: 30px">
-                        <button type="submit" class="btn btn-primary" style="max-width: 100px;" onclick="saveForm()">Salvar</button>
+                        <button type="submit" class="btn btn-primary" style="max-width: 100px;" onclick="event.preventDefault(); (async () => { await saveForm(); })()">Salvar</button>
                       </div>
                     </div>
                   </div>
@@ -584,7 +613,7 @@ async function renderEditProfile() {
                     </div>
                     <div class="col">
                       <div class="row justify-content-end" style="padding: 30px">
-                        <button type="submit" class="btn btn-primary" style="max-width: 100px;" onclick="saveForm()">Salvar</button>
+                        <button type="submit" class="btn btn-primary" style="max-width: 100px;" onclick="event.preventDefault(); (async () => { await saveForm(); })()">Salvar</button>
                       </div>
                     </div>
                   </div>

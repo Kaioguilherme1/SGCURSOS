@@ -12,6 +12,7 @@ async function hasPermissionUser(token, user_id) {
         }
         const userId = decoded.payload.id;
         const profile = decoded.payload.profile;
+        // console.log(`userId: ${userId} | user_id: ${user_id} | profile: ${profile} | decoded: ${JSON.stringify(decoded)}`);
         return profile === `admin` || userId === user_id || profile === `root`;
     } catch (error) {
         console.error('Erro ao verificar o token:', error);

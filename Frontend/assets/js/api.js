@@ -26,17 +26,16 @@ class user{
      * @param {string} image_path - O caminho da imagem do usuário.
      * @returns {Promise} - Uma Promise que resolve com o resultado do registro.
      */
-    async register(name, number, email, username, password, profile, image_path){
+    async register(name, number, email, username, password, image_path){
 
 
       const data = {
-        name,
-        number,
-        email,
-        username,
-        password,
-        profile,
-        image_path
+        "name": name,
+        "number": number,
+        "email": email,
+        "username": username,
+        "password": password,
+        "image_path": image_path
       };
 
       if (!isValid(data)) {
@@ -91,6 +90,43 @@ class user{
         }
     }
 
+    async getAll(){
+        try{
+            return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/users/getAll`, {
+                method: 'GET',
+                headers: {
+                    'authorization': this.token,
+                    'Content-Type': 'application/json'
+                },
+             }).then(response => response.json())
+                .then(responseData => {
+                    return responseData;
+                })
+        } catch (error) {
+            console.error('Error:', error);
+            return error
+        }
+    }
+
+    async edit(data){
+        try{
+            return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/users/${this.id}`, {
+                method: 'PUT',
+                headers: {
+                    'authorization': this.token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data),
+             }).then(response => response.json())
+                .then(responseData => {
+                    return responseData;
+                })
+        } catch (error) {
+            console.error('Error:', error);
+            return error
+        }
+    }
+
     async get(id){
         try{
             return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/users/${id}`, {
@@ -131,15 +167,23 @@ class user{
             return error
         }
     }
-    async getRegister (registerId){
+    async getRegister (registerId, userId,){
+        let register_Id = null
+        let user_Id = null
+        if (registerId === undefined && userId === undefined){
+            return "Preencha todos os campos!"
+        }
+        register_Id = registerId
+        user_Id = parseInt(userId)
         const data = {
-                            "id": registerId,
+                            "id": register_Id,
                             "course": null,
-                            "user": null,
+                            "user": user_Id,
                             "certificate": true,
                             "all": true
                           };
 
+        console.log(data)
         try{
              return  await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/register/get`, {
                 method: 'POST',
@@ -185,6 +229,54 @@ class Course {
     this.token = token;
     this.username = username;
     this.accountType = accountType;
+  }
+  async create(name, description, tags, category, image_path, duration_hours, lessons) {
+      const currentDate = new Date();
+      const data = {
+          "name": name,
+          "description": description,
+          "tags": tags,
+          "category_id": category,
+          "image_path": image_path,
+          "start_date": currentDate,
+          "duration_hours": parseInt(duration_hours),
+          "lessons": lessons
+      };
+      try {
+            return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/courses/register`, {
+                method: 'POST',
+                headers: {
+                    'authorization': this.token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data),
+            }).then(response => response.json())
+                .then(responseData => {
+                    return responseData;
+                })
+        } catch (error) {
+            console.error('Error:', error);
+            return error
+      }
+  }
+
+  async edit(data){
+        try{
+            return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/courses/${this.id}`, {
+                method: 'PUT',
+                headers: {
+                    'authorization': this.token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data),
+             }).then(response => response.json())
+                .then(responseData => {
+                    return responseData;
+                })
+        } catch (error) {
+            console.error('Error:', error);
+            return error
+        }
   }
   /**
   * Obtém os cursos com base nos parâmetros fornecidos.
@@ -294,4 +386,41 @@ async function validate(code) {
         return error
     }
 
+}
+
+async function getCategory(data){
+    try {
+        return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/category/get`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+        }).then(response => response.json())
+        .then(responseData => {
+            return responseData;
+        })
+    } catch (error) {
+        console.error('Error:', error);
+        return error
+    }
+}
+
+async function createCategoryApi(token ,data) {
+    try {
+        return await fetch(`${APT_PROTOCOL}://${API_URL}:${API_PORT}/category/create`, {
+            method: 'POST',
+            headers: {
+                'authorization': token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+        }).then(response => response.json())
+            .then(responseData => {
+                return responseData;
+            })
+    } catch (error) {
+        console.error('Error:', error);
+        return error
+    }
 }

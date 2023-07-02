@@ -25,7 +25,7 @@ window.addEventListener('DOMContentLoaded', function() {
         logout();
       });
 
-    } else if (accountType === 'aluno') {
+    } else if (accountType === 'student') {
         showLoggedInUser(username);
       document.getElementById('btn-logout').addEventListener('click', function(event) {
         event.preventDefault();
@@ -46,11 +46,12 @@ function showLoggedInAdmin(username) {
   userProfile.innerHTML = `
     <img src="assets/img/blank-profile.png" alt="Foto de Perfil" class="profile-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false" >
     <a href="#" class="profile-link" style="margin-left: 5px">${username}</a>
+    <span class="badge bg-danger" style="margin-left: 5px">Admin</span>
     <div class="dropdown-menu-profile">
       <ul>
         <li><a href="edit.html" class="dropdown-link">Perfil</a></li>
         <li><a href="courses.html?admin=true" class="dropdown-link">cursos</a></li>
-        <li><a href="#" class="dropdown-link">alunos</a></li>
+        <li><a href="users.html" class="dropdown-link">Usuarios</a></li>
         <li><a href="#" class="dropdown-link">Configurações</a></li>
         <li><a id="btn-logout" class="dropdown-link" >Logout</a></li>
       </ul>
@@ -61,13 +62,12 @@ function showLoggedInAdmin(username) {
 function showLoggedInUser(username) {
   let userProfile = document.querySelector('.user-profile');
   userProfile.innerHTML = `
-    <img src="assets/img/blank-profile.png" alt="Foto de Perfil" class="profile-icon">
-    <a href="#" class="profile-link">${username}</a>
-    <div class="dropdown-menu">
+    <img src="assets/img/blank-profile.png" alt="Foto de Perfil" class="profile-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false" >
+    <a href="#" class="profile-link" style="margin-left: 5px">${username}</a>
+    <div class="dropdown-menu-profile">
       <ul>
         <li><a href="edit.html" class="dropdown-link">Perfil</a></li>
-        <li><a href="#" class="dropdown-link">Meus cursos</a></li>
-        <li><a href="#" class="dropdown-link">Meus certificados</a></li>
+        <li><a href="my-courses.html" class="dropdown-link">Meus cursos</a></li>
         <li><a href="#" class="dropdown-link">Configurações</a></li>
         <li><a href="#" id="btn-logout" class="dropdown-link" >Logout</a></li>
       </ul>

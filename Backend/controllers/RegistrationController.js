@@ -105,16 +105,15 @@ async function updateRegistration(id, token, data) {
 
 async function getRegistrations(token, data) {
   const { id, course, user, certificate, all } = data;
-
-  if (user && !await hasPermissionUser(token)) {
-    requestLogger.error('Tentativa de acessar matrícula por usuário sem permissão de administrador');
+  if (user  && !await hasPermissionUser(token, user)) {
+    requestLogger.error('Tentativa de acessar matrícula por usuário sem permissão de dono da conta');
     return {
       error: true,
       message: 'Você não tem permissão para acessar a matrícula por usuário'
     };
   }
 
-  if (certificate && !await hasPermissionUser(token)) {
+  if (certificate && !await hasPermissionUser(token, user)) {
     requestLogger.error('Tentativa de acessar matrícula por certificado sem permissão de administrador');
     return {
       error: true,

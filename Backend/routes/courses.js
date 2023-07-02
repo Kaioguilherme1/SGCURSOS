@@ -14,7 +14,7 @@ router.post('/register', [
     body('start_date').notEmpty().withMessage('O campo data de início é obrigatório'),
     body('duration_hours').notEmpty().withMessage('O campo duração é obrigatório')
 ], async (req, res) => {
-const { name, description,tags , category_id, image_path, start_date, duration_hours } = req.body;
+const { name, description,tags , category_id, image_path, start_date, duration_hours, lessons } = req.body;
     let token = req.headers.authorization;
     const course = await CourseController.createCourse(token ,{
         name,
@@ -23,7 +23,8 @@ const { name, description,tags , category_id, image_path, start_date, duration_h
         category_id,
         image_path,
         start_date,
-        duration_hours
+        duration_hours,
+        lessons
     });
     res.json({course});
 });
@@ -44,7 +45,7 @@ router.put('/:id', async (req, res) => {
     let id = req.params.id;
     let data = req.body;
     let course = await CourseController.updateCourse(id, token, data);
-    res.json(courses);
+    res.json(course);
 });
 
 //--------------------------------------------------------------deletar--------------------------------------------------------------

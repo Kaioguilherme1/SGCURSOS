@@ -8,6 +8,9 @@ const {requestLogger} = require("../config/logger");
 // Controlador para criação de um usuário
 async function createUser(user) {
   try {
+    if (user.profile !== undefined) {
+      delete user.profile;
+    }
     user.password = await bycrypt.hash(user.password, 10);
     return await User.create(user);
   } catch (error) {
@@ -69,7 +72,7 @@ async function loginUser(identifier, password) {
 
 // Controlador para obter todos os usuários
 async function getAllUsers(token) {
-    if (hasPermissionAdmin(token)) {
+    if (await hasPermissionAdmin(token)) {
         try {
             requestLogger.info('todos os usuários enviados com sucesso');
             return await User.findAll();
@@ -85,7 +88,7 @@ async function getAllUsers(token) {
 
 // Controlador para obter um usuário pelo ID
 async function getUserById(token, id) {
-  if (hasPermissionUser(token, id)) {
+  if (await hasPermissionUser(token, id)) {
     try {
       const user = await User.findByPk(id);
       if (user !== undefined) {
@@ -125,9 +128,9 @@ async function updateUser(token, id, user) {
   try {
     const userFound = await User.findByPk(id);
     if (userFound) {
-      if (hasPermissionAdmin(token) || hasPermissionUser(token, id)) {
+      if  (await hasPermissionUser(token, id)) {
         // Remove o parâmetro 'profile' do objeto 'user' se o usuário não tiver perfil de administrador
-        if (!hasPermissionAdmin(token)) {
+        if (!await hasPermissionAdmin(token)) {
           delete user.profile;
           requestLogger.info(`Usuário ${id} não tem permissão para editar o perfil`);
         }
@@ -138,28 +141,21 @@ async function updateUser(token, id, user) {
       } else {
         requestLogger.error(`Usuário ${id} não tem permissão para editar este usuário`);
         throw new Error('Usuário não tem permissão para editar este usuário');
-        return {
-            error: true,
-            message: `Usuário ${user.username} não tem permissão para editar este usuário`,
-        }
       }
     } else {
       requestLogger.error(`Usuário ${id} não encontrado`);
       throw new Error(`Usuário ${id} não encontrado`);
-      return {
-        error: true,
-        message: `Usuário ${id} não encontrado`,
-      }
     }
   } catch (error) {
     requestLogger.error('Erro ao atualizar usuário: ' + error.message);
-    throw new Error('Erro ao atualizar usuário');
     return {
-        error: true,
-        message: 'Erro ao atualizar usuário',
-    }
+      error: true,
+      message: 'Erro ao atualizar usuário',
+        message_error: error.message,
+    };
   }
 }
+
 
 
 
