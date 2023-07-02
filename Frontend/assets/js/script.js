@@ -14,7 +14,18 @@ window.addEventListener('DOMContentLoaded', function() {
 
   let isLoggedIn = localStorage.getItem('isLoggedIn');
   let accountType = localStorage.getItem('profile');
+  const sessionEnd = localStorage.getItem('sessionEnd');
   const username = localStorage.getItem('username');
+
+  if (sessionEnd) {
+    const now = new Date();
+    const sessionEndParsed = new Date(sessionEnd);
+    if (now > sessionEndParsed) {
+      alert('Sua sessão expirou, faça login novamente')
+      logout();
+      window.location.href = 'login.html';
+    }
+  }
 
   if (isLoggedIn === 'true') {
 
@@ -51,7 +62,7 @@ function showLoggedInAdmin(username) {
       <ul>
         <li><a href="edit.html" class="dropdown-link">Perfil</a></li>
         <li><a href="courses.html?admin=true" class="dropdown-link">cursos</a></li>
-        <li><a href="users.html" class="dropdown-link">Usuarios</a></li>
+        <li><a href="users.html?page=1" class="dropdown-link">Usuarios</a></li>
         <li><a href="#" class="dropdown-link">Configurações</a></li>
         <li><a id="btn-logout" class="dropdown-link" >Logout</a></li>
       </ul>

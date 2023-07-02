@@ -563,6 +563,10 @@ async function renderEditProfileAdmin() {
 
 async function renderEditProfile() {
     const data = await userApi.get(userId);
+    if (data.error){
+        alert(data.message)
+        window.location.href = 'index.html';
+    }
     const {name, username, email, number, image_path,} = data.user;
 
     const headerContent = `

@@ -1,8 +1,8 @@
 
 // endereco da api
-const APT_PROTOCOL = 'http'; // process.env.APT_PROTOCOL
-const API_URL = 'localhost'; // process.env.API_URL
-const API_PORT = 3000; // process.env.API_PORT
+// const APT_PROTOCOL = 'http'; // process.env.APT_PROTOCOL
+// const API_URL = 'localhost'; // process.env.API_URL
+// const API_PORT = 3000; // process.env.API_PORT
 
 function isValid(value) {
     return value != null && value !== '';
@@ -319,6 +319,13 @@ class Course {
       const courses = await this.get(false, this.id, null, [], false, true);
       const course = courses.courses[0];
       const participants = course.participants;
+      // definindo o status do curso como finalizado
+      const response = await this.edit({status: 'closed'})
+
+      if(response.error === true){
+          alert(response.message)
+          return
+      }
 
       // gerando os certificados
       for (const participant of participants) {

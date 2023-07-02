@@ -10,16 +10,16 @@ async function hasPermissionUser(token, user_id) {
             requestLogger.error(`Token inválido: ${token}`);
             return false;
         }
-        const userId = decoded.payload.id;
+        const userId = parseInt(decoded.payload.id);
         const profile = decoded.payload.profile;
-        // console.log(`userId: ${userId} | user_id: ${user_id} | profile: ${profile} | decoded: ${JSON.stringify(decoded)}`);
-        return profile === `admin` || userId === user_id || profile === `root`;
+        const suspended = decoded.payload.suspended;
+        // console.log(`userId: ${userId} | user_id: ${user_id} | profile: ${profile} | decoded: ${JSON.stringify(decoded)} | suspended: ${suspended}`);
+        return (profile === `admin` || parseInt(userId) === parseInt(user_id) || profile === `root`) && suspended === false;
     } catch (error) {
         console.error('Erro ao verificar o token:', error);
         return false; // Ocorreu um erro na verificação do token
     }
 }
-
 
 // Verifica se o usuário é admin
 async function hasPermissionAdmin(token) {
@@ -31,7 +31,8 @@ async function hasPermissionAdmin(token) {
             return false;
         }
         const profile = decoded.payload.profile;
-        return profile === `admin` || profile === `root`;
+        const suspended = decoded.payload.suspended;
+        return (profile === `admin` || profile === `root`) && suspended === false;
     } catch (error) {
         console.error('Erro ao verificar o token:', error);
         return false; // Ocorreu um erro na verificação do token

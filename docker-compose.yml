@@ -1,0 +1,53 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    env_file:
+      - .env
+    networks:
+      - network
+    # descomente se quiser acessar o banco de dados externamente
+    #ports:
+    #  - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+
+
+    depends_on:
+        - postgres
+    ports:
+      - 3000:3000
+    networks:
+      - network
+    volumes:
+      - backend-data:/app/
+
+  nginx:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+
+    depends_on:
+      - backend
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - network
+
+
+networks:
+  network:
+
+volumes:
+  backend-data:
+  postgres-data:

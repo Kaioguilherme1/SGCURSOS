@@ -2,11 +2,11 @@ const {databaseLogger} = require("../config/logger");
 
 const database = {
   dialect: "postgres",
-  host: "192.168.20.4", // process.env.DB_HOST_LOCAL,
-  port: 5432,
-  database: "university", // process.env.DB_DATABASE,
-  username: "postgres", //process.env.DB_USER,
-  password: "1234", //process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: process.env.POSTGRES_DB,
+  username: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
   logging: (message) => {
     databaseLogger.info(message);
   }

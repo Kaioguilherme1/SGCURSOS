@@ -10,18 +10,22 @@ async function login() {
   try {
     const Data = await User.login(username, password);
     const responseData = Data.login
-    console.log(responseData)
     if (typeof responseData === 'string') {
-      console.log(responseData);
       alert(responseData);
     } else if (responseData.error === true) {
-      console.log(responseData.message);
       alert(responseData.message);
     } else {
       const token = responseData.token;
-      const { name, email, profile,id, image_path } = responseData.user;
+      const sessionEnd = responseData.valid_at;
+      const { name, email, profile,id, image_path,is_suspended  } = responseData.user;
+      console.log(responseData)
+      if (is_suspended) {
+        alert('Usuário suspenso. Entre em contato com o administrador do sistema.');
+        window.location.href = 'contact.html';
+      }
 
       // Armazenar os valores no localStorage
+      localStorage.setItem('sessionEnd', sessionEnd);
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('token', token);
       localStorage.setItem('id', id);

@@ -165,7 +165,7 @@ function renderCoursesAdmin(courses) {
 
       courses.forEach(function (course) {
         // Extrai os dados do JSON do curso
-        let {name, tags, duration_hours, id} = course.course;
+        let {name, tags, duration_hours, id, status} = course.course;
         const numParticipants = course.participants.length;
         let courseCardHTML = `
           <div class="row mt-3 justify-content-center" style="background-color: transparent; border-bottom: 1px solid #2787ff; margin: 5px; padding: 5px;">
@@ -178,6 +178,7 @@ function renderCoursesAdmin(courses) {
               <a> Tags: ${tags.map(tag => `<a href="courses.html?admin=true&&tags=${tag}" style="margin: 4px" type="button" class="btn btn-outline-primary btn-sm">${tag}</a>`).join('')}</a>
             </div>
             <div class="col text-end align-self-center">
+              ${status === 'open' ? '<span class="badge bg-success">Aberto</span>' : '<span class="badge bg-danger">Encerrado</span>'}
               <img class="btn-icon" href="course.html?id=${id}" id="btn-view-${id}" src="assets/icons/document-104.png" alt="Ver curso" width="35" height="35" title="Ver" style="margin: 4px" onclick="(() => {window.location.href = 'course.html?id=${id}'})()">
               <img class="btn-icon" id="btn-edit-${id}" src="assets/icons/edit-104.png" alt="Editar" width="35" height="35" title="Editar" style="margin: 4px" onclick="(() => {window.location.href = 'edit.html?course=${id}'})()">
               <img class="btn-icon" id="btn-delete-${id}" src="assets/icons/trash-96.png" alt="Deletar" width="35" height="35" title="Deletar" style="margin: 4px" onclick="deleteCourse(${id})">
@@ -207,12 +208,15 @@ async function getCourses() {
 
 
   const coursesJson = await courseApi.get(false, null, courseSearch, tagsSearch, categorySearch, false)
-  const coursesList = coursesJson.courses
+
 
   if (admin === 'true' && (accountType === 'admin' || accountType === 'root')) {
-    renderCoursesAdmin(coursesList);
+      const coursesList = coursesJson.courses
+      renderCoursesAdmin(coursesList);
   } else{
-    renderCourses(coursesList);
+      const coursesList = coursesJson.courses.filter(course => course.course.status === "open");
+
+      renderCourses(coursesList);
   }
 
 }

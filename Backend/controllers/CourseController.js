@@ -127,7 +127,7 @@ async function getCourses(token, consult) {
         } else {
             coursesList.push({
               course,
-              participants: participantsList.map(() => 'confidencial')
+              participants: participantsList.map(participant => participant.User.id)
           });
         }
       }

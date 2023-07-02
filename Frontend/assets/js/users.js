@@ -97,7 +97,6 @@ async function renderUsers() {
       if (endIndex > users.length) {
         endIndex = users.length;
       }
-      console.log(totalPages);
       pagination.innerHTML= `
         <li class="page-item ${page === 1 ? 'disabled' : ''}">
           <a class="page-link" onclick="previousPage()" style="cursor: pointer">Previous</a>

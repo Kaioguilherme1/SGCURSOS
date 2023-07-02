@@ -1,3 +1,4 @@
+
 const jwt = require('jsonwebtoken');
 const {auth} = require("../config/auth");
 const {requestLogger} = require("../config/logger");
@@ -43,9 +44,16 @@ function isOwner(token, id) {
   }
 }
 
+async function getExpirationDate(Token) {
+  let duration = parseInt(auth.expireIn);
+  const currentDate = new Date();
+  return new Date(currentDate.getTime() + duration * 60 * 60 * 1000);
+}
+
 module.exports = {
     validateToken,
     generateToken,
+    getExpirationDate,
     isAdmin,
     isOwner,
 }

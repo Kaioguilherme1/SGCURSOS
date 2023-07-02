@@ -83,6 +83,13 @@ async function renderCourse() {
         let {name, description, duration_hours, Category, tags, lessons} = courseJson.courses[0].course
         let enrolled_count = courseJson.courses[0].participants.length
 
+        if (courseJson.courses[0].participants.includes(localStorage.getItem('id'))) {
+          btnRegisterCourse.innerHTML = "matriculado"
+          btnRegisterCourse.onclick = null
+          btnRegisterCourse.classList.remove('btn-primary')
+          btnRegisterCourse.classList.add('text-bg-secondary')
+        }
+
         courseTitle.innerHTML = name
         courseDescription.innerHTML = description
         courseCh.innerHTML = `Carga Horária: <span style="font-weight: bold; background-color: rgba(255, 255, 255, 0.3); padding: 2px 6px; border-radius: 4px;">${duration_hours} horas</span>`
@@ -93,13 +100,20 @@ async function renderCourse() {
 
     }else if ((profile === "admin" || profile === "root") && token !== null) {
         const courseJson = await course.get(false, id, null, [], null, true)
-        let {name, description, duration_hours, Category, tags, lessons} = courseJson.courses[0].course
+        let {name, description, duration_hours, Category, tags, status, lessons} = courseJson.courses[0].course
         let participants = courseJson.courses[0].participants
         let enrolled_count = participants.length
+        console.log (courseJson.courses[0])
+
+        if (participants.some(participant => participant.User_id === parseInt(localStorage.getItem('id')))) {
+          btnRegisterCourse.innerHTML = "matriculado"
+          btnRegisterCourse.disabled = true
+          btnRegisterCourse.classList.remove('btn-primary')
+          btnRegisterCourse.classList.add('text-bg-secondary')
+        }
 
         participants.map(participant => `<li class="list-group-item">${participant.name}</li>`).join('')
 
-        console.log(participants)
         courseTitle.innerHTML = name
         courseDescription.innerHTML = description
         courseCh.innerHTML = `Carga Horária: <span style="font-weight: bold; background-color: rgba(255, 255, 255, 0.3); padding: 2px 6px; border-radius: 4px;">${duration_hours} horas</span>`
@@ -107,7 +121,7 @@ async function renderCourse() {
         courseCategory.innerHTML = `<a type="button" class="btn btn-dark" href="courses.html?category=${Category.name}"> ${Category.name}</a>`
         courseTags.innerHTML = tags.map(tag => `<a href="courses.html?tags=${tag}" type="button" class="btn btn-outline-primary btn-sm" style="margin: 4px">${tag}</a>`).join('')
         courseLessons.innerHTML = lessons.map(lesson => `<li class="list-group-item">${lesson}</li>`).join('')
-        btnEndCourse.innerHTML = `<button type="button" class="btn btn-danger" onclick="endCourse('${id}', '${token}')">Encerrar Curso</button>`
+        btnEndCourse.innerHTML = status === "open" ? `<button type="button" class="btn btn-danger" onclick="endCourse('${id}', '${token}')">Encerrar Curso</button>` : `<button type="button" class="btn text-bg-secondary" disabled>Curso Encerrado</button>`
         courseBody.innerHTML += `
 
             <div class="accordion" id="accordionPanelsStayOpenExample">
@@ -137,9 +151,8 @@ async function renderCourse() {
                               ${participant.final_grade === null ? '<h5><span class="badge bg-secondary">Não avaliado</span></h5>' : `<h5><span class="badge ${participant.final_grade < 5 ? 'text-bg-danger' : (participant.final_grade >= 5 && participant.final_grade < 7) ? 'text-bg-warning' : (participant.final_grade >= 7 && participant.final_grade < 8) ? 'text-bg-primary' : 'text-bg-success'}">${participant.final_grade}</span></h5>`}
                               </div>
                             <div class="col text-end align-self-center">
-                              ${participant.Certificate === null ? '' : `<img class="btn-icon" href="course.html?id=${participant.id}" id="btn-view-${participant.id}" src="assets/icons/certificate-dev-96.png" alt="Ver curso" width="35" height="35" title="Ver" style="margin: 4px" onclick="(() => {window.location.href = 'certificate.html?code=${participant.Certificate.validate_code}'})()">`}
-                              <img class="btn-icon" id="btn-edit-${participant.id}" src="assets/icons/edit-104.png" alt="Editar" width="35" height="35" title="Editar" style="margin: 4px" onclick="editGrade(${participant.id}, '${token}')">
-                              <img class="btn-icon" id="btn-delete-${participant.id}" src="assets/icons/trash-96.png" alt="Deletar" width="35" height="35" title="Deletar" style="margin: 4px" >
+                              ${participant.Certificate === null ? '' : `<img class="btn-icon" href="course.html?id=${participant.id}" id="btn-view-${participant.id}" src="assets/icons/certificate-dev-96.png" alt="Ver certificado" width="35" height="35" title="Ver certificado" style="margin: 4px" onclick="(() => {window.location.href = 'certificate.html?code=${participant.Certificate.validate_code}'})()">`}
+                              <img class="btn-icon" id="btn-edit-${participant.id}" src="assets/icons/edit-104.png" alt="Editar nota" width="35" height="35" title="Editar" style="margin: 4px" onclick="editGrade(${participant.id}, '${token}')">
                             </div>
                           </div>
                         

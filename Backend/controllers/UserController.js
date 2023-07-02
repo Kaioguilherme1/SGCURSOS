@@ -51,12 +51,13 @@ async function loginUser(identifier, password) {
           }
         }
         // Gera o token
-        const Token = TokenController.generateToken({ id: user.id, profile: user.profile });
+        const Token = TokenController.generateToken({ id: user.id, profile: user.profile, suspended: user.is_suspended });
         delete user.password;
         requestLogger.info(`Usuário ${identifier} autenticado com sucesso`);
         return {
             error: false,
             message: 'Usuário autenticado com sucesso',
+            valid_at: await TokenController.getExpirationDate(Token),
             token: Token,
             user: user
         };
@@ -88,6 +89,8 @@ async function getAllUsers(token) {
 
 // Controlador para obter um usuário pelo ID
 async function getUserById(token, id) {
+  const confirm = await hasPermissionAdmin(token);
+  console.log(confirm);
   if (await hasPermissionUser(token, id)) {
     try {
       const user = await User.findByPk(id);
@@ -160,7 +163,7 @@ async function updateUser(token, id, user) {
 
 
 async function deleteUser(token, id) {
-    if(hasPermissionUser(token, id)) {
+    if(await hasPermissionUser(token, id)) {
         try {
             const userFound = await User.findByPk(id);
             if (userFound) {
