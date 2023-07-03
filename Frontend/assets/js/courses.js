@@ -133,6 +133,7 @@ function renderCoursesAdmin(courses) {
             <div class="card-body">
               <h5 class="card-title">Nenhum curso encontrado</h5>
               <p class="card-text">Desculpe, não há cursos disponíveis no momento.</p>
+              <button type="button" class="btn btn-primary" style="width: 200px" onclick="(() => {window.location.href = 'edit.html?create=true'})()" >Criar Curso</button>
             </div>
           </div>
         </div>
