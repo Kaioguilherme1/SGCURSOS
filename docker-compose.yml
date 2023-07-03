@@ -7,8 +7,9 @@ services:
     networks:
       - network
     # descomente se quiser acessar o banco de dados externamente
-    ports:
-      - 5432:5432
+    # ports:
+    #  - 5432:5432
+    restart: always
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
@@ -16,6 +17,8 @@ services:
     build:
       context: ./Backend
       dockerfile: Dockerfile
+
+    restart: always
     env_file:
       - .env
     depends_on:
@@ -33,7 +36,7 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env
-
+    restart: always
     depends_on:
       - backend
     ports:
