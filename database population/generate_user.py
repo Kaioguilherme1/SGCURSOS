@@ -16,12 +16,12 @@ sql_file_users = open('insert_users.sql', 'w')
 insert_sql_users = 'INSERT INTO "Users" (username, password, email, name, number, image_path, profile, is_suspended, "createdAt", "updatedAt")\nVALUES\n'
 
 sql_file_users.write(insert_sql_users)
-num_users = 100
+num_users = 200
 num_courses = 20
 users_per_course = num_users // num_courses
 
 # Geração do arquivo insert_registrations.sql
-sql_file_registrations = open('insert_registrations.sql', 'w')
+sql_file_registrations = open('insert.sql', 'w')
 
 # Instrução SQL INSERT para matrículas
 insert_sql_registrations = 'INSERT INTO "Registrations" ("User_id", "Course_id", progress_time,"createdAt", "updatedAt")\nVALUES\n'

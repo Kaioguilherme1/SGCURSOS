@@ -13,11 +13,11 @@ sql_file_registrations.write(insert_sql_registrations)
 
 num_users = 100
 num_courses = 20
-users_per_course = 10
+users_per_course = 20
 
 def generate_grade(progress_time):
     if progress_time > 90:
-        return random.randint(0, 100)
+        return random.randint(0, 10)
     else:
         return 'NULL'
 
