@@ -1,6 +1,15 @@
+
+<p align="center">
+  <img src="https://github.com/Kaioguilherme1/SGCURSOS/assets/65198889/222b366f-4321-4b5d-9fa7-0005f3d25b63" alt="Logo">
+</p>
+
 # SGCURSOS - Sistema de Gerenciamento de Cursos Online
+
+
  
 uma aplicação de gerenciamento de cursos online desenvolvida como trabalho final da disciplina de Banco de Dados 2 na Universidade Federal de Roraima (UFRR).
+
+---
 
 ## Descrição do Projeto
 
