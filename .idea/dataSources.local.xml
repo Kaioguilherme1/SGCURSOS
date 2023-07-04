@@ -35,7 +35,7 @@
         </introspection-scope>
       </schema-mapping>
     </data-source>
-    <data-source name="sgcursos@localhost" uuid="4c3e416c-0c6b-4b3b-9bb3-02808604da6f">
+    <data-source name="sgcursos@localhost [2]" uuid="ffe67aad-0943-426f-8175-fd691165feb1">
       <database-info product="PostgreSQL" version="15.3 (Debian 15.3-1.pgdg120+1)" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.6.0" dbms="POSTGRES" exact-version="15.3" exact-driver-version="42.6">
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
@@ -44,8 +44,14 @@
       <user-name>sgcursos</user-name>
       <schema-mapping>
         <introspection-scope>
-          <node kind="database" qname="@">
-            <node kind="schema" qname="@" />
+          <node negative="1">
+            <node kind="database" negative="1" />
+            <node kind="database" qname="@">
+              <node kind="schema" qname="@" />
+            </node>
+            <node kind="database" qname="sgcursos">
+              <node kind="schema" negative="1" />
+            </node>
           </node>
         </introspection-scope>
       </schema-mapping>
