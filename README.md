@@ -15,6 +15,9 @@ uma aplicação de gerenciamento de cursos online desenvolvida como trabalho fin
 
 O SGCURSOS é uma aplicação web que permite o gerenciamento de cursos online, oferecendo recursos de registro de usuários, criação e consulta de categorias e cursos, matrículas em cursos, emissão de certificados, entre outros. A aplicação foi desenvolvida com o objetivo de colocar em prática os conhecimentos adquiridos na disciplina de Banco de Dados 2, abrangendo desde a modelagem do banco de dados até a implementação de uma aplicação funcional.
 
+## [Requisitos Implementados](docs/REQUISITOS.md)
+Clique para expandir
+
 ## Tecnologias Utilizadas
 
 - Node.js
@@ -50,6 +53,15 @@ Para executar o projeto localmente, siga as instruções abaixo:
    ```
 
    O SGCURSOS estará disponível para uso.
+   
+Para acesso como root utilize as seguintes credenciais:
+
+```
+user: root
+password: 1234
+```
+
+ou altere o arquivo .env para suas credenciais.
 
 ## Link do Serviço em Nuvem
 

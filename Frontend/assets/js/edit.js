@@ -301,11 +301,10 @@ async function renderCreateCourse() {
                   <select class="form-select" id="input-category" aria-label="Default select example" required>
                       <option selected disabled value="">Selecione...</option>
                       ${categoryList.map((option) => `<option value="${option.id}">${option.name}</option>`).join('')}
-                      <optgroup label="Criar Categoria">
-                        <option value="create">Criar Categoria</option>
-                      </optgroup>
                   </select>
-
+                    
+                  <button type="button" class="btn btn-primary" onclick="createCategory()" style="margin: 2px">Criar Categoria</button>
+                    
                   <div class="valid-feedback">
                     Parece bom!
                   </div>
@@ -421,7 +420,7 @@ async function renderEditCourse() {
                       ${categoryList.map((option) => `<option value="${option.id}">${option.name}</option>`).join('')}
                     </select>
                     
-                    <button type="button" class="btn btn-primary" onclick="createCategory()">Criar Categoria</button>
+                    <button type="button" class="btn btn-primary" onclick="createCategory()" style="margin: 2px">Criar Categoria</button>
 
                   </div>
                 </div>
